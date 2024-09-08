@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.utils import timezone
-from .models import MoodEntry
+from .models import Product
 
 class mainTest(TestCase):
     def test_main_url_is_exist(self):
@@ -12,15 +12,15 @@ class mainTest(TestCase):
         self.assertTemplateUsed(response, 'main.html')
 
     def test_nonexistent_page(self):
-        response = Client().get('/skibidi/')
+        response = Client().get('/nonexistant/')
         self.assertEqual(response.status_code, 404)
 
-    def test_strong_mood_user(self):
-        now = timezone.now()
-        mood = MoodEntry.objects.create(
-          mood="LUMAYAN SENANG",
-          time = now,
-          feelings = "senang sih, cuman tadi baju aku basah kena hujan :(",
-          mood_intensity = 8,
+    def test_product_exist(self):
+        product = Product.objects.create(
+          name="Aqua",
+          price = 4000,
+          description = "a bottle of drinking water from the Aqua brand",
+          stock = 1000,
+          category = "Beverage",
         )
-        self.assertTrue(mood.is_mood_strong)
+        self.assertTrue("Aqua - Rp. 4,000 - 1000 is in stock - Beverage category." == product.product_info())

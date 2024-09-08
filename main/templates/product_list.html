@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List - DodoStore</title>
+    <style>
+        /*  */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+            padding: 0px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+        .product-item {
+            background: #fff;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+        }
+        .product-item img {
+            border-radius: 8px;
+            max-width: 150px;
+            margin-right: 20px;
+        }
+        .product-details {
+            flex: 1;
+        }
+        .product-details strong {
+            display: block;
+            color: #007bff;
+        }
+        .product-details p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        .no-products {
+            text-align: center;
+            font-size: 1.2em;
+            color: #777;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Product List</h1>
+
+        {% if products %}
+        <ul class="product-list">
+            {% for product in products %}
+            <li class="product-item">
+                <div class="product-details">
+                    <strong>Name:</strong> {{ product.name }}
+                    <strong>Price:</strong> ${{ product.price }}
+                    <strong>Description:</strong>
+                    <p>{{ product.description }}</p>
+                    <strong>Stock:</strong> {{ product.stock }}
+                    <strong>Category:</strong> {{ product.category }}
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-products">New products coming soon!</p>
+        {% endif %}
+
+        <a href="/" class="button">Return to Main Page</a>
+    </div>
+</body>
+</html>
