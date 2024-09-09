@@ -1,5 +1,5 @@
-### PWS : http://orlando-devito-dodostore.pbp.cs.ui.ac.id (PWS down) 
-### Github : https://github.com/ThatTryHard/dodostore.git
+### PWS : http://orlando-devito-dodostore.pbp.cs.ui.ac.id
+### Github : https://github.com/ThatTryHard/dodostore
 
 - 1. Untuk membuat project django baru, pertama saya menggunakan command `python -m venv` env pada direktori utama yang akan saya gunakan untuk menyimpan projek utama saya, yang akan digunakan untuk mengisolasi package dan dependencies agar tidak mengalami conflicts dengan package lain. kemudian saya mengaktifkan virtual environment saya dengan command `env\Scripts\activate`. Dan pada direktori yang sama, saya membuat file `requirements.txt` yang berisikan dependencies untuk projek Djangonya, yaitu django, gunicorn, whitenoise, psycopg2-binary, requests, dan urllib3. Lalu dengan command `pip install -r requirements.txt` yang dijalankan dengan environment yang sedang aktif, akan menginstall semua library ini ke dalam sistem. Setelah semua terinstall, saya menggunakan command `django-admin startproject dodo_store .` untuk menginisiasi projek baru bernama `dodo_store` di direktori utama. Untuk kebutuhan deployment, saya menambahkan host pada `ALLOWED_HOSTS` di `settings.py`, yaitu `localhost` dan `127.0.0.1` agar dapat ditampilkan dalam jaringan saya. Setelah melakukan ini, saya dapat melihat animasi roket ketika membuka http://localhost:8000/ yang menandakan saya berhasil dalam penginstallan Django ini. Setelah semua terinstall, saya menutup servernya dengan command `deactivate` pada Command Prompt saya.
 
