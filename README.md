@@ -99,15 +99,21 @@
 
 -  ```mermaid
         graph TD;
-            Client -->|Request| urls.py;
-            urls.py -->|Maps Request| views.py;
+            Client -->|Request| Internet;
+            Internet -->|Forwards request| DjangoProject;
+            DjangoProject --> |Opens| urls.py;
+            urls.py -->|Maps to| views.py;
             views.py -->|Access Data| models.py;
-            models.py -->|Provides data| views.py;
-            views.py -->|Renders data| template.html;
-            template.html -->|Sends response| Client;
+            models.py --> |Access Database| Database;
+            Database --> |Returns Data| models.py;
+            models.py -->|Sends data| views.py;
+            views.py -->|Passes data| Templates;
+            Templates -->|Render| DjangoProject;
+            DjangoProject --> |WebPage| Internet;
+            Internet --> |WebPage| Client;
    ```
 
-    Dari sisi client, menggunakan HTTP protocol dari browser akan meminta request ke `urls.py`, dan Django akan memeriksa `urls.py` untuk mencari URL yang sesuai dengan yang direquest oleh client. ketika sudah sesuai, Django akan mengarahkan request tersebut ke fungsi yang ada di `views.py`, yang bertanggung jawab untuk memproses logika dari requestnya pada aplikasi, dan jika terdapat query data yang dibutuhkan baik untuk diakses saja atau dimanipuasi dari database, dia akan mengakses `models.py`, yang mengelola struktur database dari project Django melalui ORM Django. Jika `views.py` membutuhkan data dari database, `models.py` akan melakukan query untuk mengambil atau meyimpan data. Ketika data sudah diperoleh, `views.py` akan mengirim data tersebut ke template HTML dengan data yang telah diambil dari `models.py` dan dirender menggunakan data tersebut sebagai response HTML yang akan ditampilkan di browser klien, yang dimana browser tersebut akan menampilkan halaman web tersebut ke klien.
+    Dari sisi client, menggunakan HTTP protocol internet dari browser akan meminta request ke `urls.py`, dan Django akan memeriksa `urls.py` untuk mencari URL yang sesuai dengan yang direquest oleh client. ketika sudah sesuai, Django akan mengarahkan request tersebut ke fungsi yang ada di `views.py`, yang bertanggung jawab untuk memproses logika dari requestnya pada aplikasi, dan jika terdapat query data yang dibutuhkan baik untuk diakses saja atau dimanipuasi dari database, dia akan mengakses `models.py`, yang mengelola struktur database dari project Django melalui ORM Django. Jika `views.py` membutuhkan data dari database, `models.py` akan melakukan query untuk mengambil atau meyimpan data. Ketika data sudah diperoleh, `views.py` akan mengirim data tersebut ke template HTML dengan data yang telah diambil dari `models.py` dan dirender menggunakan data tersebut sebagai response HTML yang akan ditampilkan di browser klien, yang dimana browser tersebut akan menampilkan halaman web tersebut ke klien.
 
 - Menurut saya, git termasuk ke dalam sistem kontrol versi yang sangat populer dalam pengembangan perangkat lunak karena fungsinya yang efisien untuk mengelola perubahan kode, memungkinkan kolaborasi, dan melacak semua riwayat proyek. Git menyimpan tiap perubahan yang dilakukan, yang memungkinkan user untuk melihat sejarahnya, kembali ke versi sebelumnya, dan bekerja secara paralel melalui fitur branching dan merging tanpa saling mengganggu. Selain itu, Git mendeteksi dan membantu pengelolaan konflik ketika dua user membuat perubahan pada bagian kode yang sama. Sebagai sistem distribusi, Git memungkinkan user bekerja secara *offline*, sementara repositori utama berfungsi sebagai cadangan proyek. Git juga sering diintegrasikan dengan alat otomatisasi untuk mendukung proses *Continuous Integration* (CI) dan *Continuous Delivery* (CD), yang menguji dan mendistribusikan kode ke produksi. Fitur seperti *pull request* dan *code review* membantu menjaga kualitas dan keamanan kode. Jadi, Git dapat mempermudah pendeteksian bug, mempermudah pemecahan masalah, dan memastikan proyek perangkat lunak tetap terorganisir dan mudah dikelola.
 
