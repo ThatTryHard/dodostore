@@ -55,11 +55,77 @@
             .button:hover {
                 background-color: #0056b3;
             }
-        </style>
-        {% block meta %} {% endblock meta %}
-    </head>
+            table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+            }
 
-    <body>
-        {% block content %} {% endblock content %}
-    </body>
-</html>
+            thead {
+            background-color: #333;
+            color: white;
+            }
+
+            th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            }
+
+            tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+            }
+
+            tbody tr:hover {
+            background-color: #f5f5f5;
+            }
+
+            th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            }
+
+            form table {
+            width: 100%;
+            border-collapse: collapse;
+            }
+
+            form table td {
+            padding: 10px;
+            }
+
+            form input[type="text"],
+            form input[type="number"],
+            form textarea,
+            form select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            }
+
+            form input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            }
+
+            form input[type="submit"]:hover {
+            background-color: #0056b3;
+            }
+
+            </style>
+            {% block meta %} {% endblock meta %}
+        </head>
+
+        <body>
+            {% block content %} {% endblock content %}
+        </body>
+    </html>

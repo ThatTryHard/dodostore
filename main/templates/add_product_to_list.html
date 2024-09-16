@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 <h1>Add New Product</h1>
 
@@ -6,13 +6,13 @@
   {% csrf_token %}
   <table>
     {{ form.as_table }}
-    <tr>
-      <td></td>
-      <td>
-        <input type="submit" value="Add Product" />
-      </td>
-    </tr>
   </table>
+
+  <!-- Add Product button -->
+  <div class="form-actions">
+    <input type="submit" class="button" value="Add Product" />
+    <a href="/" class="button">Return to Main Page</a>
+  </div>
 </form>
 
 {% endblock %}
