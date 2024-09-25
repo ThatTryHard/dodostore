@@ -8,32 +8,32 @@
   2. Untuk membuat aplikasi pada project django saya, pertama saya membuka direktori utama proyek Djangonya, kemudian dengan command `env\Scripts\activate` saya mengaktifkan virtual environmentnya. Setelah itu, saya menjalankan command `python manage.py startapp main` untuk membuat aplikasi bernama `main`. Setelah aplikasi main sudah ada di direktori, saya menambahkan `main` kedalam variabel `INSTALLED_APPS` di dalam berkas `settings.py` pada direktori proyek `dodo_store`.
 
   3. Untuk routing, pertama saya melakukan pengubahan di berkas `urls.py` di dalam direktori proyek `dodo_store` yang berisikan:
-    ```python 
-    from django.contrib import admin
-    from django.urls import path, include
+        ```python
+        from django.contrib import admin
+        from django.urls import path, include
 
-    urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('', include('main.urls')),
-    ]
-    ```
-     berkas file `urls.py` di direktori proyek `dodo_store` ini mengatur rute URL keseluruhan proyek, saya menggunakan `include` untuk mengimpor semua rute URL yang ada di `main` ke dalam proyek `dodo_store`. Dan pada path `''` diarahkan ke rute `main`, agar dapat diakses langsung.
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', include('main.urls')),
+        ]
+        ```
+        berkas file `urls.py` di direktori proyek `dodo_store` ini mengatur rute URL keseluruhan proyek, saya menggunakan `include` untuk mengimpor semua rute URL yang ada di `main` ke dalam proyek `dodo_store`. Dan pada path `''` diarahkan ke rute `main`, agar dapat diakses langsung.
 
   4. Untuk membuat model `Product` pada aplikasi `main`, saya membuka berkas `models.py` di direktori aplikasi `main` terlebih dahulu. Kemudian saya menambahkan class Product yang sebagai berikut:
-  ```python
-  from django.db import models
-    
-  class Product(models.Model):
-      name = models.CharField(max_length=255)  #Product name
-      price = models.IntegerField()  # Product price
-      description = models.TextField()  # Product description
+        ```python
+        from django.db import models
+            
+        class Product(models.Model):
+            name = models.CharField(max_length=255)  #Product name
+            price = models.IntegerField()  # Product price
+            description = models.TextField()  # Product description
 
-      stock = models.IntegerField(default=0)  # Product in stock
-      category = models.CharField(max_length=100, blank=True, null=True)  # Product category
+            stock = models.IntegerField(default=0)  # Product in stock
+            category = models.CharField(max_length=100, blank=True, null=True)  # Product category
 
-      def product_info(self):
-          return f"{self.name} - Rp. {self.price:,} - {self.stock} is in stock - {self.category} category."
-  ```
+            def product_info(self):
+                return f"{self.name} - Rp. {self.price:,} - {self.stock} is in stock - {self.category} category."
+        ```
      dengan `models.Model` sebagai pendefinisian model di Django, dan `Product` sebagai nama model, saya mendefinisikan `name`, `price`, dan `description` sebagai atribut yang diwajibkan dengan menerima tipe data yang sesuai juga.Saya juga menambahkan atribut `stock` dan `category` sebagai atribut tambahan, serta fungsi `product_info()` yang akan mengembalikan informasi dari produknya. Setelah pembuatan model ini, saya membuat beberapa tests di `tests.py` untuk mengecek apakah prosesnya dapat dilakukan dengan tepat. dengan berkas yang sebagai berikut:
      ```python
      from django.test import TestCase, Client
@@ -66,35 +66,35 @@
      tests yang dijalankan adalah test untuk mengecek url main, apakah main menggunakan templatenya, test untuk mengecek halaman yang tidak ada, dan test untuk mengecek apakah produk ada atau tidak.
 
   5. Untuk menghubungkan views dengan template pada proses MVT, dapat dilakukan dengan cara membuat fungsi pada `views.py` di direktori aplikasi `main`. fungsi yang saya implementasikan ada 3, yaitu `show_main` dan `product_list`.
-  ```python
-  def show_main(request):
-      context = {
-          'app_name' : 'Dodo Store',
-          'name': 'Orlando Devito',
-          'class': 'PBP A'
-      }
+        ```python
+        def show_main(request):
+            context = {
+                'app_name' : 'Dodo Store',
+                'name': 'Orlando Devito',
+                'class': 'PBP A'
+            }
 
-      return render(request, "main.html", context)
+            return render(request, "main.html", context)
 
-  def product_list(request):
-      # Take all Product data from the database
-      products = Product.objects.all()
-      return render(request, 'product_list.html', {'products': products})
-  ```
+        def product_list(request):
+            # Take all Product data from the database
+            products = Product.objects.all()
+            return render(request, 'product_list.html', {'products': products})
+        ```
      yang diminta secara detail hanya fungsi `show_main`, yang diminta mengembaikan nama aplikasi, nama saya, dan kelas saya untuk ditampilkan pada berkas `main.html` saya. untuk `product_list` tidak diberikan permintaan yang detail, sehingga saya mengambil semua data dari databasenya, dengan render request yang mengimplementasikan **Context Dictionary** yang berisi list dari tiap product yang ada di database.
 
   6. untuk routing URL di direktori aplikasi `main`, pertama saya membuat berkas file `urls.py` di direktori `main`, dan mengisi berkasnya sebagai berikut:
-  ```python
-  from django.urls import path
-  from . import views
+        ```python
+        from django.urls import path
+        from . import views
 
-  app_name = 'main'
+        app_name = 'main'
 
-  urlpatterns = [
-      path('', views.show_main, name='main'),
-      path('products/', views.product_list, name='product_list'),
-  ]
-  ```
+        urlpatterns = [
+            path('', views.show_main, name='main'),
+            path('products/', views.product_list, name='product_list'),
+        ]
+        ```
      berkas `urls.py` ini mengatur routing untuk tiap URL di aplikasi `main`. Untuk mendefinisikan pola URL, saya mengimpor `path` dari `django.urls`. dan saya menggunakan fungsi `show_main` dan `product_list` dari `main.views` sebagai unit untuk menampilkan data-data ketika URL diakses. `app_name` digunakan untuk menampilkan nama unik di aplikasi.
 
   7. Untuk mendeploy ke halaman PWS, pertama akses terlebih dahulu alamat https://pbp.cs.ui.ac.id/ dan melakukan registerasi. Setelah registerasi selesai, lakukan login dan akan di redirect ke halaman utama. Setelah itu, saya menekan tombol `+ Create new Project` dan mengisi **Project Name** dengan `dodostore` dan saya menginisiasi pembuatan project baru dengan nama tersebut. Lalu, pada berkas `settings.py` di direktori project `dodo_store`, pada variabel `ALLOWED_HOSTS`, saya menambahkan host baru yaitu `orlando-devito-dodostore.pbp.cs.ui.ac.id` yang merupakan URL depoloyment PWS saya. Setelah itu saya push ke github saya dan menjalankan command `git remote add pws http:/pbp.cs.ui.ac.id/orlando.devito/dodostore` untuk menginisiasi link remote repository baru yang terhubung dengan PWS saya. Setelah itu saya mengakses branch `master` dengan cara menjalankan `git branch -M master`, dan terakhir saya push ke PWS dengan cara menjalankan `git push pws master`. Cara saya mengecek apakah saya berhasil atau tidak yaitu saya melihat status projectnya, jika statusnya `running` dan ketika tombol `View Project` ditekan dan tidak error, berarti bahwa saya telah berhasil push ke PWS saya.
@@ -321,3 +321,268 @@
    2. ![JSON](static/images/JSON.png)
    3. ![XML by ID](static/images/XML_by_ID.png)
    4. ![JSON by ID](static/images/JSON_by_ID.png)
+
+### Tugas 4
+- Apa perbedaan antara `HttpResponseRedirect()` dan `redirect()`?
+    
+    `redirect()` merupakan fungsi yang lebih fleksibel dan praktis yang dapat menerima beberapa tipe argumen dan secara otomatis mengonversi mereka menjadi pengalihan yang valid, beberapa tipe argumen yang dapat diterima adalah nama *view*, *URL string*, *object model* yang kemudian akan dikonversi menjadi *URL* dan diproses dengan *HTTP*. Sedangkan untuk fungsi `HttpResponseRedirect()`, hanya menerima argumen berupa *URL* dalam bentuk string saja untuk diproses dengan *HTTP*.
+- Jelaskan cara kerja penghubungan model `Product` dengan `User`!
+
+    Penggabungan model `Product` dengan `User` dapat dilakukan dengan cara menambahkan atribut `user` ke dalam model `Product`, yang akan berperan sebagai *Foreign Key* yang mengarah ke model `User`. Ketika di berkas `models.py` ditambahkan baris `user = models.ForeignKey(User, on_delete=models.CASCADE)` yang digunakan untuk menghubungkan instance `Product` dengan user dengan relasi yang asosiatif. Saat user menambahkan product, data tersebut masuk ke `request.user`yang kemudian disimpan di *field* `user` pada model `Product`.  Dan ketika pada suatu saat, salah satu user dihapus, maka semua produk yang dia buat pun akan terhapus secara otomatis karena kita menggunakan `on_delete=models.CASCADE`.
+
+- Apa perbedaan antara *authentication* dan *authorization*, apakah yang dilakukan saat pengguna login? Jelaskan bagaimana Django mengimplementasikan kedua konsep tersebut.
+
+    *Authentication* adalah proses untuk memverifikasi identitas pengguna, dengan tujuan memastikan bahwa seseorang adalah siapa yang mereka klaim. Ini bisa berupa pengguna yang memasukkan *username* dan *password* untuk membuktikan hak akses ke akun mereka. Di sisi lain, *authorization* adalah langkah berikutnya yang menentukan apa yang pengguna diizinkan untuk lakukan setelah mereka terautentikasi. *Authorization* menjawab pertanyaan terkait hak akses, seperti apakah pengguna hanya bisa melihat data atau juga bisa mengubahnya, tergantung pada peran atau izin yang dimiliki.
+
+    Ketika pengguna login, proses *authentication* terjadi terlebih dahulu. Pengguna memberikan kredensial mereka, seperti *username* dan *password*, yang kemudian diverifikasi oleh sistem untuk memvalidasi identitas mereka. Jika kredensial tersebut benar, pengguna dinyatakan terautentikasi dan sesi login dimulai untuk melacak status mereka pada interaksi berikutnya. Setelah *authentication* selesai, tahap *authorization* berjalan, menentukan sumber daya atau fungsi apa yang bisa diakses berdasarkan izin atau peran pengguna dalam sistem.
+
+    Django menyediakan sistem *authentication* built-in yang menangani login, logout, dan sesi pengguna. Model `User` dari `django.contrib.auth.models` menyimpan informasi pengguna, dan ketika mereka login, fungsi seperti `authenticate()` dan `login()` digunakan untuk memverifikasi kredensial. Setelah sukses, Django membuat sesi untuk mengingat pengguna dan memberi akses ke halaman atau area yang membutuhkan login.
+
+    Untuk *authorization*, Django menggunakan sistem izin (*permissions*) dan grup (*groups*). Sistem ini memungkinkan pengembang menentukan tindakan apa yang dapat dilakukan pengguna terhadap model atau sumber daya tertentu. Izin-izin tersebut bisa diterapkan melalui decorator seperti `@permission_required` atau mixin seperti `PermissionRequiredMixin`, yang secara otomatis memeriksa apakah pengguna memiliki hak akses yang dibutuhkan sebelum memungkinkan mereka melakukan tindakan tertentu.
+
+- Bagaimana Django mengingat pengguna yang telah login? Jelaskan kegunaan lain dari *cookies* dan apakah semua *cookies* aman digunakan?
+    Django mengingatkan pengguna yang telah login dengan menggunakan *session framework*. Setelah login berhasil, Django menyimpan *Session ID* pengguna dalam *cookies* yang kemudia dikirimkan ke browser. *Cookie* ini berisi referensi ke sesi yang disimpan di *server*. Saat pengguna membuat permintaan berikutnya, browser mengirimkan *cookie* tersebut, dan Django menggunakan *Session ID* untuk mengetahui pengguna yang telah login. Django menyimpan detail sesi di *backend* yang dapat berupa *database*, *cache*, atau *system file*, tergantung pada konfigurasi di pengaturan Django (`SESSION_ENGINE`). *Cookie* `sessionid` adalah **kunci utama** yang digunakan oleh Django untuk melacak sesi pengguna yang telah login.
+
+    *Cookies* memiliki beberapa kegunaan lain, yaitu:
+    1. **Melacak preferensi pengguna:** *Cookies* dapat menyimpan preferensi seperti bahasa, tema, atau lokasi geografis yang membantu situs menyesuaikan pengalaman pengguna.
+    2. **Menjaga keranjang belanja (*shopping cart*):** Dalam aplikasi *e-commerce*, *cookies* digunakan untuk menyimpan item yang dimasukkan pengguna ke dalam keranjang belanja tanpa harus login.
+    3. **Memonitoring aktivitas:** *Cookies* dapat digunakan untuk analitik web untuk melacak aktivitas pengguna di situs, seperti halaman yang dikunjungi, waktu kunjungan, dan sebagainya.
+
+    Tidak semua *cookies* aman digunakan. Keamanan *cookies* tergantung pada cara mereka dikonfigurasi dan digunakan. Beberapa faktor penting yang mempengaruhi keamanan *cookies* meliputi: *HttpOnly flag*, yang mencegah akses cookie oleh *JavaScript* sehingga mengurangi risiko pencurian oleh skrip berbahaya; *Secure flag*, memastikan *cookies* hanya dikirim melalui koneksi HTTPS yang terenkripsi; serta *SameSite flag*, yang membantu melindungi dari serangan lintas situs seperti *Cross-Site Request Forgery* (CSRF). *Cookies* yang berisi informasi sensitif, seperti *session ID*, sebaiknya dienkripsi agar tidak dapat dibaca oleh pihak tidak berwenang. Selain itu, *cookies* harus memiliki waktu kedaluwarsa yang tepat untuk mencegah penggunaannya setelah sesi selesai. Singkatnya, *cookies* dapat aman jika dikonfigurasi dengan benar, tetapi tanpa langkah-langkah keamanan ini, *cookies* dapat menjadi target serangan seperti pencurian sesi atau CSRF. Maka dari itu, sangat penting bagi pengguna untuk menjaga keamanan dan mempertimbangkan tiap kebijakan dari *cookie* yang ada pada website yang dikunjungi.
+
+- Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial).
+   * Mengimplementasikan fungsi *registrasi*, *login*, dan *logout* untuk memungkinkan pengguna untuk mengakses aplikasi sebelumnya dengan lancar.
+        1. **Fungsi Registerasi**
+            
+            Sebelum memulai membuat kode, saya menyalakan *virtual environment* terlebih dahulu dengan `env\Scripts\activate`. Kemudian, pada `main/views.py` saya menambahkan import `UserCreationForm` dan `messages`, yang akan digunakan sebagai formulir pendaftaran *user* dalam aplikasi web tanpa harus menulis banyak kode di awal. kemudian pada `views.py` saya menambahkan function `register` yang sebagai berikut:
+            ```python
+            ...
+            def register(request):
+                form = UserCreationForm()
+
+                if request.method == "POST":
+                    form = UserCreationForm(request.POST)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, 'Your account has been successfully created!')
+                        return redirect('main:login')
+                context = {'form':form}
+                return render(request, 'register.html', context)
+            ...
+            ```
+            Kode `form = UserCreationForm(request.POST)` membuat *UserCreationForm* baru dengan menggunakan input dari pengguna yang diambil dari `request.POST`. Metode `form.is_valid()` memvalidasi input dari form dan kemudian data disimpan dengan `form.save()`. Setelah itu, `messages.success` menampilkan pesan sukses kepada pengguna. Terakhir, `return redirect('main:login')` mengarahkan pengguna ke halaman *login* setelah data form berhasil disimpan.
+            Kemudian, saya menerapkan template `register.html` pada `main/templates` agar datanya dapat ditampilkan, sebagai berikut implementasinya:
+            ```html
+            {% extends 'base.html' %}
+
+            {% block meta %}
+            <title>Register</title>
+            {% endblock meta %}
+
+            {% block content %}
+
+            <div class="login">
+            <h1>Register</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <table>
+                {{ form.as_table }}
+                <tr>
+                    <td></td>
+                    <td><input type="submit" name="submit" value="Register" /></td>
+                </tr>
+                </table>
+            </form>
+
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            </div>
+
+            {% endblock content %}
+            ```
+            Pada template ini, saya mengimplementasikan `{{ form.as_table }}` untuk menampilkan form dalam bentuk tabel, sehingga proses pembuatan form menjadi lebih terstruktur. Lalu, pada `main/urls.py` saya melakukan import `register` dari `main.views`, kemudian ditambahkan *URL path*nya pada *urlpatterns* agar dapat mengakses halamannya
+            ```python
+            ...
+            urlpatterns = [
+            ...
+            path('register/', register, name='register'),
+            ]
+            ```
+
+        2. **Fungsi Login**
+            
+            Saya mengawali implementasi fungi *login* ini dengan cara mengimpor `authenticate`, `login`, dan `AuthenticationForm` pada `main/views.py`, yang merupakan fungsi bawaan Django untuk melakukan autentikasi, dan ketika berhasil dia akan melakukan *login*. Masih pada direktori yang sama, saya menambahkan fungsi `login_user` yang berfungsi sebagai autentikasi pengguna yang ingin *login*, yang saya implementasikan sebagai berikut
+            ```python
+            ...
+            def login_user(request):
+                if request.method == 'POST':
+                    form = AuthenticationForm(data=request.POST)
+
+                    if form.is_valid():
+                        user = form.get_user()
+                        login(request, user)
+                        response = HttpResponseRedirect(reverse("main:main"))
+                        response.set_cookie('last_login', str(datetime.datetime.now()))
+                        return response
+
+                else:
+                    form = AuthenticationForm(request)
+                context = {'form': form}
+                return render(request, 'login.html', context)
+            ...
+            ```
+            form autentikasi dibuat menggunakan data dari `request.POST`. Jika form valid, pengguna akan diambil dari form dan proses *login* dilakukan dengan fungsi *login*. `login(request, user)` berfungsi untuk melakukan *login* terlebih dahulu. Jika pengguna valid, fungsi ini akan membuat *session* untuk pengguna yang berhasil *login*. Setelah itu, pengguna diarahkan ke halaman utama melalui `HttpResponseRedirect`, dan waktu *login* terakhir disimpan dalam *cookie* bernama `last_login`. Jika metode `HTTP` bukan `POST`, form autentikasi baru akan dibuat dan ditampilkan di halaman *login*. Kemudian, saya melakukan import dengan line `from django.contrib.auth.decorators import login_required` dan menambahkan dekorator `@login_required(login_url='/login')` diatas fungi `show_main`. Hal ini saya lakukan dengan tujuan, fungsi `show_main` hanya dapat ditampilkan ketika pengguna telah *login* yang terautentikasi.
+
+            Lalu, saya membuat template `login.html` di `main/templates` dengan isi sebagai berikut
+            ```html
+            {% extends 'base.html' %}
+
+            {% block meta %}
+            <title>Login</title>
+            {% endblock meta %}
+
+            {% block content %}
+            <div class="login">
+            <h1>Login</h1>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                <table>
+                {{ form.as_table }}
+                <tr>
+                    <td></td>
+                    <td><input class="btn login_btn" type="submit" value="Login" /></td>
+                </tr>
+                </table>
+            </form>
+
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} Don't have an account yet?
+            <a href="{% url 'main:register' %}">Register Now</a>
+            </div>
+
+            {% endblock content %}
+            ```
+            Template ini merupakan laman *login* yang jika sebelumnya pengguna tidak memiliki akun, maka ada link yang akan melakukan redirect untuk melakukan *register* akun dahulu. Kemudian pada `main/urls.py`saya melakukan import fungsi `login_user` dan menambahkan *URL path* nya kedalam variabel `urlpatterns` pada berkas yang sama.
+
+        3.  **Fungsi Logout**
+
+            Pertama, saya ke `main/views.py` dan mengimpor `logout` dari `django.contrib.auth`, dan menambahkan fungsi:
+            ```python
+            ...
+            def logout_user(request):
+                logout(request)
+                response = HttpResponseRedirect(reverse('main:login'))
+                response.delete_cookie('last_login')
+                return response
+            ...
+            ```
+            Fungsi `logout_user` digunakan untuk melakukan proses *logout* pengguna. Ketika fungsi ini dipanggil, pengguna akan dikeluarkan dari sesi aktif dengan fungsi `logout(request)`. Setelah *logout*, pengguna akan diarahkan kembali ke halaman *login* menggunakan `HttpResponseRedirect`. Selain itu, *cookie* bernama `last_login` yang menyimpan waktu login terakhir akan dihapus dengan `response.delete_cookie('last_login')` sebelum mengembalikan respons. Setelah itu, saya ke`main/templates/main.html` dan menambahkan `<a href="{% url 'main:logout' %}" class="button">Logout</a>` yang secara dinamis melakukan *routing* ke *URL logout* yang sudah didefinisikan. Kemudian, seperti fungsi *register* dan *login*, saya ke `main/urls.py` dan mengimpor fungsi `logout_user`dan memasukkan *URL path*nya ke dalam variabel `urlpatterns`.
+
+    * Membuat dua akun pengguna dengan masing-masing tiga dummy data menggunakan model yang telah dibuat pada aplikasi sebelumnya untuk setiap akun di lokal.
+        
+        Untuk mengimplementasikan ini, saya pertama melakukan register sebanyak 2 akun, yaitu `dodo` dan `devito`, dan kemudian pada tiap akun, saya memasukkan 3 buah *dummy file* menggunakan *instance* dari model `Product`. Dengan *form* `add_product_to_list`, saya dapat menginputkan tiap *dummy file* yang kemudian disimpan di dalam `db.sqlite3` lokal saya. Saya dapat mengetahui saya berhasil dengan cara ketika saya login menggunakan akun `dodo`, dan saya ke `product_list` dengan button *View Products*, halamannya hanya akan menampilkan produk dari user `dodo` saja, dan juga berlaku untuk akun `devito`, yang berarti `User` yang saya implementasikan sudah terhubung dengan baik dengan model `Product`nya.
+    
+    * Menghubungkan model `Product` dengan `User`.
+
+        Untuk mengubungan `User` dengan *instance* suatu `Product` model, dapat diawali dengan mengimpor `User` dari `django.contrib.auth.models` di berkas `main/models.py`, dan pada model `Product` dapat ditambahkan variabel user, yang berisikan `user = models.ForeignKey(User, on_delete=models.CASCADE)`, yang menghubungkan beberapa *instance product* dengan suatu `User` dengan realasi asosiatif. Dan pada fungsi `add_product_to_list` di `main/views.py` saya modifikasi menjadi:
+        ```python
+        ...
+        
+        def add_product_to_list(request):
+            form = ProductForm(request.POST or None)
+
+            if form.is_valid() and request.method == "POST":
+                add_product = form.save(commit=False)
+                add_product.user = request.user
+                add_product.save()
+                return redirect('main:main')
+
+            context = {'form': form}
+            return render(request, "add_product_to_list.html", context)
+        ...
+        ```
+        Parameter `commit=False` digunakan untuk mencegah Django langsung menyimpan objek *form* ke database, memungkinkan modifikasi sebelum penyimpanan. Pada kasus ini, field `user` diisi dengan `request.user` yang sedang terotorisasi, menandakan bahwa objek tersebut dimiliki oleh pengguna yang sedang *login*. Lalu, pada fungsi `show_main`, saya melakukan perubahan sebagai berikut:
+        ```python
+        ...
+        @login_required(login_url='/login')
+        def show_main(request):
+
+            context = {
+                'app_name' : 'Dodo Store',
+                'name': request.user.username,
+                'class': 'PBP A',
+                'last_login': request.COOKIES['last_login'],
+            }
+
+            return render(request, "main.html", context)
+        ...
+        ```
+        Ini hanya akan menampilkan nama dari user yang sedang login, dan pada fungsi `product_list` saya juga melakukan modifikasi sebagai berikut:
+        ```python
+        ...
+        def product_list(request):
+            # Take all Product data from the database
+            products = Product.objects.filter(user=request.user)
+            return render(request, 'product_list.html', {'products': products})
+        ...
+        ```
+        Dan ini akan hanya menampilkan produk yang terasosiasikan dengan user yang sedang *login*, dengan cara menyaring semua objek, dan mengambil yang mengambil pada field `user` yang berisi objek `request.user` yang sama.
+
+        Setelah menyimpan semua perubahan, saya lakukan migrasi model dengan `python manage.py makemigrations` dan akan menampilkan
+        ```
+        It is impossible to add a non-nullable field 'user' to moodentry without specifying a default. This is because the
+        database needs something to populate existing rows.
+        Please select a fix:
+        1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+        2) Quit and manually define a default value in models.py.
+        Select an option:
+        ```
+        Kemudian saya memilih 1 untuk menetapkan *default value* untuk field `user` pada semua *row* yang telah dibuat di database, dan ke *prompt* ini
+        ```
+        Please enter the default value as valid Python.
+        The datetime and django. utils. timezone modules are available, so it is possible to provide e.g. timezone. now as a
+        value.
+        Type 'exit' to exit this prompt
+        >>>
+        ```
+        Lalu saya mengetik angka 1, untuk menetapkan ID sebagai 1. Kemudian saya mengaplikasikan migrasi modelnya dengan cara `python manage.py migrate`. Kemudian pada `dodo_store/settings.py` saya melakukan import `os`, dan mengganti variabel `DEBUG` menjadi:
+        ```python
+        ...
+        PRODUCTION = os.getenv("PRODUCTION", False)
+        DEBUG = not PRODUCTION
+        ...
+        ```
+        Agar dapat memudahkan *switch* dari *production mode* dan *development mode* berdasarkan *environment variable*.
+
+    * Menampilkan detail informasi pengguna yang sedang *logged in* seperti *username* dan menerapkan *cookies* seperti *last login* pada halaman utama aplikasi.
+
+        Pertama, saya memastikan saya telah `logout` dari aplikasinya, kemudian saya menambah import `HTTPResponseDirect`, `reverse` dan`datetime` pada `main/views.py`. Dan pada fungsi `login_user` saya menambahkan *cookie* bernama `last_login` untuk melihat terakhir kali melakukan *login*, yang terdapat pada *snippet* berikut:
+        ```python
+        ...
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:main"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        ...
+        ```
+        Dengan `response` nya ditambahkan *cookie* `last_login` yang berupa tanggal waktu dan tanggal terakhir kali pengguna tersebut *login*. Kemudian, pada fungsi `show_main`, saya menambahkan potongan kode `'last_login': request.COOKIES['last_login']` ke dalam variabel `context`, yang berfungsi untuk menambahkan informasi *cookie* `last_login` pada response yang akan ditampilkan di halaman web. Kemudian pada fungsi `logout_user` di berkas yang sama, saya juga menambahkan `response` yang akan melakukan *reverse redirect* ke halaman *login*, dan akan menghapus cookie `last_login` saat pengguna melakukan *logout* dengan kode `response.delete_cookie('last_login')`. Modifikasi terakhir saya lakukan di `main/templates/main.html`, yaitu dengan menambahkan informasi untuk sesi terakhir pengguna melakukan *login*.
+        ```html
+        ...
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
+        ...
+        ```
+        Setelah itu, saya menjalankan *server* Djago saya lagi dan saya dapat melihat kapan terakhir saya *login*. Untuk dapat melihat apakah data *cookie* saya sudah ada, saya ke browser yang saya gunakan, dan saya lakukan *inspect element* dan membuka bagian *application*. Kemudian, saya buka bagian *Cookies* dan dapat melihat semua *cookies* saya, yaitu ada `last_login`, `sessionid`, dan `csrf_token`.

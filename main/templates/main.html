@@ -20,8 +20,10 @@
             <h5>Class:</h5>
             <p>{{ class }}</p>
         </div>
-        <a href="products/" class="button">View Products</a>
-        <a href="add_product_to_list/" class="button">Add Products</a>
+        <a href="{% url 'main:product_list' %}" class="button">View Products</a>
+        <a href="{% url 'main:add_product_to_list' %}" class="button">Add Products</a>
+        <a href="{% url 'main:logout' %}" class="button">Logout</a>
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
     </div>
 </body>
 </html>

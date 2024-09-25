@@ -1,5 +1,6 @@
 from django.urls import path
 from main import views
+from main.views import register, login_user, logout_user
 
 app_name = 'main'
 
@@ -11,4 +12,7 @@ urlpatterns = [
     path('json/', views.show_json, name='show_json'),
     path('xml/<str:id>/', views.show_xml_by_id, name='show_xml_by_id'),
     path('json/<str:id>/', views.show_json_by_id, name='show_json_by_id'),
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
 ]
