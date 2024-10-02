@@ -1,0 +1,267 @@
+/* Root Variables for Light and Dark Mode Colors */
+:root {
+    /* Light Mode Colors */
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --navbar-background-color: #f8f9fa;
+    --primary-color: #007bff;
+    --btn-hover-text-color: white;
+    --focus-color: rgba(0, 123, 255, 0.5);
+    --ink-color: #007bff;
+    --input-bg-color: #f8f9fa;
+    --input-border-color: #ced4da;
+    --input-text-color: #495057;
+    --input-placeholder-color: #6c757d;
+    --prompt-bg-color: #ffffff;
+    --prompt-border-color: #dee2e6;
+    --alert-bg-color: #f8d7da;
+    --alert-text-color: #721c24;
+
+    /* Dark Mode Colors */
+    --dark-background-color: #121212;
+    --dark-text-color: #ffffff;
+    --dark-navbar-background-color: #343a40;
+    --primary-dark-color: #bb86fc;
+    --btn-dark-hover-text-color: black;
+    --focus-dark-color: rgba(187, 134, 252, 0.5);
+    --link-dark-color: #bb86fc;
+    --dark-input-bg-color: #1c1c1c;
+    --dark-input-border-color: #444444;
+    --dark-input-text-color: #e9ecef;
+    --dark-input-placeholder-color: #cccccc;
+    --dark-prompt-bg-color: #343a40;
+    --dark-prompt-border-color: #495057;
+    --dark-alert-bg-color: #721c24;
+    --dark-alert-text-color: #f8d7da;
+}
+
+/* Light Theme Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Retained shadow */
+}
+
+.card-description {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.form-floating .form-control {
+    background-color: var(--input-bg-color);
+    color: var(--input-text-color);  /* Light mode text */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Retained transition */
+}
+
+.form-floating .form-control:focus {
+    border-color: var(--ink-color);  /* Light mode focus color */
+    box-shadow: 0 0 0 0.2rem var(--focus-color);
+}
+
+.form-floating .form-control:focus + label,
+.form-floating .form-control:not(:placeholder-shown) + label {
+    transform: scale(0.85);
+    top: -0.75rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.image-preview-container {
+    background-color: var(--background-color);
+    border: 1px solid var(--input-border-color);
+    transition: all 0.3s ease;
+}
+
+.dark-mode .image-preview-container {
+    background-color: var(--dark-background-color);
+    border: 1px solid var(--dark-input-border-color);
+    transition: all 0.3s ease;
+}
+
+.form-floating label {
+    color: var(--input-placeholder-color);  /* Light mode placeholder color */
+    transition: color 0.3s ease;
+}
+
+.navbar-light {
+    background-color: var(--navbar-background-color);
+}
+
+input[type="file"] {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.dark-mode input[type="file"] {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+    cursor: pointer;
+}
+
+.navbar-light .dropdown-menu {
+    --bs-dropdown-bg: var(--background-color);
+}
+
+.navbar-dark .dropdown-menu {
+    --bs-dropdown-bg: var(--dark-background-color);
+}
+
+.navbar-dark .dropdown-menu .dropdown-item {
+    color: var(--link-dark-color);
+}
+
+.navbar-dark .dropdown-menu .dropdown-item:hover {
+    background-color: var(--btn-dark-hover-text-color);
+}
+
+/* Button Customization */
+.btn-custom {
+    background-color: var(--primary-color);
+    color: var(--btn-hover-text-color);
+}
+
+a {
+    color: var(--link-color);
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode .form-floating .form-control {
+    background-color: var(--dark-input-bg-color);
+    color: var(--dark-input-text-color);
+    border-color: var(--dark-input-border-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Retained transition */
+}
+
+.dark-mode .form-floating .form-control:focus {
+    border-color: var(--primary-dark-color);  /* Dark mode focus color */
+    box-shadow: 0 0 0 0.2rem var(--focus-dark-color);
+}
+
+.dark-mode .form-floating .form-control:focus + label {
+    color: var(--primary-dark-color);
+}
+
+.dark-mode .form-floating label {
+    color: var(--dark-input-placeholder-color);
+    transition: color 0.3s ease;
+}
+
+.dark-mode a {
+    color: var(--link-dark-color);
+}
+
+.dark-mode .navbar-dark {
+    background-color: var(--dark-navbar-background-color);
+}
+
+/* Buttons in Dark Mode */
+.dark-mode .btn-custom {
+    background-color: var(--primary-dark-color);
+    color: var(--btn-dark-hover-text-color);
+}
+
+.dark-mode .btn-outline-secondary {
+    border-color: var(--primary-dark-color);
+    color: var(--primary-dark-color);
+}
+
+.radiolist.dark input[type="radio"] {
+    accent-color: var(--dark-background-color); /* Change radio button color in dark mode */
+}
+
+/* Transition for smooth theme change */
+body, .btn-custom, a, .navbar-light, .navbar-dark {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button Styles */
+.btn-outline-rounded {
+    font-size: 16px;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+    outline: none;
+}
+
+.btn-outline-rounded:hover {
+    background-color: var(--primary-color);
+    color: var(--btn-hover-text-color);
+}
+
+.btn-outline-rounded:focus {
+    box-shadow: 0 0 0 4px var(--focus-color);
+}
+
+.btn-outline-rounded:active {
+    transform: scale(0.96);
+}
+
+/* Dark Mode Button Styles */
+.dark-mode .btn-outline-rounded {
+    border-color: var(--primary-dark-color);
+    color: var(--primary-dark-color);
+}
+
+.dark-mode .btn-outline-rounded:hover {
+    background-color: var(--primary-dark-color);
+    color: var(--btn-dark-hover-text-color);
+}
+
+.dark-mode .btn-outline-rounded:focus {
+    box-shadow: 0 0 0 4px var(--focus-dark-color);
+}
+
+.dark-mode .card {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2); /* Retained shadow */
+}
+
+.dark-mode .card-description {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+}
+
+#floatingTextarea2 {
+    min-height: 150px;
+    max-height: 500px;
+    height: auto;
+}
+
+/* Container for the image preview */
+.image-preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Preview image styles */
+.image-preview {
+    display: none;
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.carousel-img {
+    width: 100%;
+    height: 500px; /* Set a specific height */
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+}
+

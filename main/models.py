@@ -11,6 +11,7 @@ class Product(models.Model):
 
     stock = models.IntegerField(default=0)  # Product in stock
     category = models.CharField(max_length=100, blank=True, null=True)  # Product category
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True) # Product image
 
     def product_info(self):
         return f"{self.name} - Rp. {self.price:,} - {self.stock} is in stock - {self.category} category."

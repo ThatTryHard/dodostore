@@ -1,32 +1,50 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block meta %}
 <title>Login</title>
 {% endblock meta %}
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<div class="min-vh-100 d-flex justify-content-center align-items-center {% if theme == 'dark' %} bg_dark {% else %} bg_light {% endif %}">
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
+  <div class="w-100" style="max-width: 400px;">
+    
+    <div class="d-flex flex-row justify-content-center align-items-center ">
+      <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 100px; width: auto; padding-left: 10px; padding-right: 10px;">
+    </div>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
+    <h2 class="text-center mb-4">Login</h2>
+    
+    <form method="POST" action="">
+      {% csrf_token %}
+
+      <div class="form-floating mb-3">
+        <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
+        <label for="username">Username</label>
+      </div>
+      
+      <div class="form-floating mb-3">
+        <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+        <label for="password">Password</label>
+      </div>
+      
+      <button type="submit" class="btn btn-primary w-100">Sign in</button>
+    </form>
+    
+    {% if messages %}
+    <div class="mt-4">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="text-center mt-3">
+      <p>Don't have an account? <a href="{% url 'main:register' %}">Register Now</a></p>
+    </div>
+  
+  </div>
 </div>
-
 {% endblock content %}

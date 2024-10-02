@@ -586,3 +586,823 @@
         ...
         ```
         Setelah itu, saya menjalankan *server* Djago saya lagi dan saya dapat melihat kapan terakhir saya *login*. Untuk dapat melihat apakah data *cookie* saya sudah ada, saya ke browser yang saya gunakan, dan saya lakukan *inspect element* dan membuka bagian *application*. Kemudian, saya buka bagian *Cookies* dan dapat melihat semua *cookies* saya, yaitu ada `last_login`, `sessionid`, dan `csrf_token`.
+
+### Tugas 5
+- Jika terdapat beberapa *CSS selector* untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+    **Urutan prioritas** yang menentukan *CSS selector* mana yang diterapkan ketika ada beberapa *selector* untuk elemen yang sama. Urutan prioritas ini disebut ***Specificity***. Berikut adalah urutan prioritasnya dari yang tertinggi hingga terendah:
+    1. **!important:** Digunakan untuk melakukan *overwrite* semua aturan lain, memberikan prioritas tertinggi pada properti yang diberikan penanda ini.
+        ```css
+        selector {
+            property: value !important;
+        }
+        ```
+
+    2. **Inline CSS Style:** CSS yang ditulis langsung di elemen HTML melalui atribut *style*. Ini memiliki prioritas tertinggi. Contohnya;
+        ```html
+        <p style="color: red;">This text is red</p>
+        ```
+    3. **ID Selector:** *Selector* yang menggunakan # diikuti dengan ID elemen yang dituliskan pada file CSS. Contohnya:
+        ```css
+        #header {
+            background-color: blue;
+        }
+        ```
+    4. **Class Selector**, **Attribute Selector**, **Pseudo-Class:** Selector yang menggunakan `.` untuk *class*, `[attr]` untuk *attribute*, dan `:hover` untuk *pseudo-class*. Contohnya:
+        ```css
+        .container {
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            border: 1px solid black;
+        }
+
+        button:hover {
+            background-color: green;
+        }
+        ```
+    5. **Element Selector** dan **Pseudo-Element:** *Selector* yang merujuk ke elemen HTML langsung atau *pseudo-element* seperti `::before` yang dituliskan langsung di berkas HTMLnya. Contohnya:
+        ```css
+        h1 {
+            font-size: 24px;
+        }
+
+        p::before {
+            content: "Prefix ";
+        }
+        ```
+    6. **Universal Selector (\*):** *Selector* yang berlaku untuk semua elemen. Contohnya:
+        ```css
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ```
+    
+    Jika terdapat beberapa *selector* yang menerapkan aturan yang berbeda, maka *selector* dengan *specificity* tertinggi akan diterapkan. Jika *specificity* dalam tingkatan yang sama, aturan yang didefinisikan terakhir dalam CSS akan diterapkan.
+
+- Mengapa *responsive design* menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan *responsive design*!
+
+    *Responsive design* memungkinkan website untuk beradaptasi dengan berbagai ukuran layar dan perangkat seperti desktop, tablet, dan ponsel. Ini penting karena pengguna saat ini mengakses website melalui berbagai perangkat dengan resolusi yang berbeda. Tanpa *responsive design*, website mungkin terlihat buruk atau sulit digunakan di perangkat tertentu.
+
+    - Sudah menerapkan *responsive design*:
+
+        YouTube. Ketika diakses dari desktop, layout berubah dengan tampilan *sidebar* untuk navigasi. Sementara di perangkat *mobile*, navigasi tersembunyi di menu burger untuk efisiensi ruang.
+
+    - Belum menerapkan *responsive design*:
+
+        Website lama. Website yang tidak mendukung *responsive design* biasanya menggunakan *layout fixed-width*. Contoh umum adalah situs web statis yang lebih tua di mana elemen-elemen halaman tidak menyesuaikan diri dengan baik pada layar *mobile*, mengharuskan pengguna untuk melakukan *zoom-in* atau scroll secara horizontal.
+
+- Jelaskan perbedaan antara *margin*, *border*, dan *padding*, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+    1. *Margin:* Ruang di luar elemen, yang memisahkan elemen dari elemen lain.
+    2. *Border:* Garis di sekitar elemen yang memisahkan padding dari margin.
+    3. *Padding:* Ruang di dalam elemen antara konten elemen dan border.
+
+    ```css
+    .box {
+        margin: 20px;     /* Jarak di luar elemen */
+        border: 2px solid red; /* Garis di sekitar elemen */
+        padding: 10px;    /* Ruang antara border dan konten */
+    }
+    ```
+
+    ![Box_Model](static/images/Box_Model.png)
+
+- Jelaskan konsep *flex box* dan *grid layout* beserta kegunaannya!
+
+    1. **Flexbox:** *Flexbox* digunakan untuk membuat *layout* satu dimensi, baik itu secara baris atau kolom. *Flexbox* sangat berguna untuk *layout* yang responsif di mana elemen-elemen di dalamnya dapat menyesuaikan ruang yang ada. *Flexbox* memungkinkan kita untuk secara dinamis mengatur posisi item dan mendistribusikan ruang di antara mereka.
+
+        ```css
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .flex-item {
+            flex: 1;
+        }
+        ```
+
+        *Flexbox* sangat cocok untuk tata letak yang linier dan responsif, misalnya, menempatkan elemen secara horizontal atau vertikal dengan perataan dinamis.
+
+    2. **Grid Layout:** *Grid layout* digunakan untuk membuat *layout* dua dimensi yang lebih kompleks, di mana elemen-elemen bisa diatur dalam baris dan kolom secara bersamaan. Dengan *CSS Grid*, kita bisa lebih mudah mengatur *layout* yang rumit, misalnya, menempatkan elemen di *grid* tanpa bergantung pada struktur HTML yang kaku.
+
+        ```css
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto;
+        }
+
+            .grid-item {
+            grid-column: span 2; /* Elemen ini akan menempati dua kolom */
+        }
+        ```
+        *Grid Layout* lebih baik untuk membuat tata letak yang kompleks, seperti *layout* halaman majalah, di mana kita ingin kontrol penuh atas baris dan kolom.
+    
+    Kedua konsep ini membantu dalam menciptakan *layout* yang fleksibel dan responsif sesuai dengan kebutuhan.
+
+- Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial)!
+
+    1. Implementasikan fungsi untuk menghapus dan mengedit *product*.
+
+        Pertama untuk mengedit produk, saya membuat fungsi `edit_product_info` pada `main/views.py` yang menerima parameter `request` dan `id`, dan menambahkan import `reverse`.
+        
+        ```python
+        from django.shortcuts import ..., reverse
+        ...
+        def edit_product_info(request, id):
+            product = Product.objects.get(pk=id)
+            form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+
+            if form.is_valid() and request.method == "POST":
+                form.save()
+                return HttpResponseRedirect(reverse('main:product_list'))
+
+            context = {'form': form, 'product': product}
+            return render(request, "edit_product_info.html", context)
+        ...
+        ```
+        
+        Kemudian, saya membuat berkas HTML baru bernama `edit_product_info.html` pada `main/templates` yang dapat mengakses `datafield` dari *instance Product* dan mengedit isinya. Kemudian pada `main/urls.py` saya menambahkan *path URL* pada `urlpatterns` sebagai berikut
+        
+        ```python
+        ...
+        urlpatterns = [
+        ...
+            path('edit-product-info/<uuid:id>', views.edit_product_info, name='edit_product_info'),
+        ...
+        ]
+        ```
+        
+        Untuk menghapus *instance product* saya membuat fungsi `delete_product`pada `main/views.py` yang menerima parameter `request` dan `id` sebagai berikut:
+
+        ```python
+        def delete_product(request, id):
+            product = Product.objects.get(pk = id)
+            product.delete()
+
+            return HttpResponseRedirect(reverse('main:product_list'))
+        ```
+
+        Kemudian pada `main/urls.py` saya menambahkan *path URL* pada `urlpatterns` sebagai berikut:
+        ```python
+        ...
+        urlpatterns = [
+        ...
+            path('delete/<uuid:id>', views.delete_product, name='delete_product'),
+        ...
+        ]
+        ```
+
+        Lalu pada berkas `product_list.html` pada `main/templates` dan saya menerapkan 2 `href` untuk tiap `instance Product` dalam class `button` sebagai tombol `edit info` dan `delete`. Terdapat link `href` `"{% url 'main:edit_product_info' product.pk %}"` untuk `edit info` dan `"{% url 'main:delete_product' product.pk %}"` untuk `delete` yang digunakan untuk menambahkan *Primary Key* dari *instance* `product` sebagai parameter yang kemudian diteruskan ke fungsi yang sudah ditetapkan di `main/views.py`.
+
+    2. Kustomisasi desain pada template HTML yang telah dibuat pada tugas-tugas sebelumnya menggunakan CSS atau CSS framework (seperti **Bootstrap**, Tailwind, Bulma) dengan ketentuan sebagai berikut:
+    
+    - Kustomisasi halaman login, register, dan tambah product semenarik mungkin.
+    
+        Untuk halaman login, register, dan tambah product saya menggunakan `base.html` sebagai basisnya. saya menerapkan Bootstrap sebagai framework CSS yang saya gunakan. Pertama, saya membuka `settings.py` dan menambahkan *middleware* `whitenoise` pada variabel `MIDDLEWARE` agar dapat memproses file `static` secara otomatis tanpa konfigurasi kompleks.
+
+        ```python
+        ...
+        MIDDLEWARE = [
+            'django.middleware.security.SecurityMiddleware',
+            'whitenoise.middleware.WhiteNoiseMiddleware',
+            ...
+        ]
+        ...
+        ```
+        
+        Selanjutnya, saya melakukan konfigurasi file `static` dan `media` dengan memastikan variabel STATIC_URL, STATICFILES_DIRS, STATIC_ROOT, MEDIA_URL, dan MEDIA_ROOT dikonfigurasi dengan benar:
+
+        ```python
+        ...
+        STATIC_URL = '/static/'
+        if DEBUG:
+            STATICFILES_DIRS = [
+                BASE_DIR / 'static' # merujuk ke /static root project pada mode development
+            ]
+        else:
+            STATIC_ROOT = BASE_DIR / 'static' # merujuk ke /static root project pada mode production
+
+        MEDIA_URL = '/media/'
+        MEDIA_ROOT = BASE_DIR / 'media'
+        ...
+        ```
+
+        Setelah itu, saya membuat berkas `styles.css` pada direktori baru di `static/css` dengan diisi *custom styling* dari elemen-elemen program saya. Kemudian, saya menguhubungkan bootstrap saya dengan `base.html` yang saya gunakan di program saya, sebagai berikut:
+        ```html
+        {% load static %}
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{% block title %}{% endblock %}</title>
+
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+            
+            <!-- Bootstrap Icons and custom styling-->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+            <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+            <style>
+                body, .navbar, footer {
+                    transition: background-color 0.5s ease, color 0.5s ease;
+                }
+            </style>
+            
+            {% if not user.is_authenticated %}
+            <button id="darkModeToggle" class="btn btn-outline-secondary ms-lg-3 mt-2 mt-lg-0">
+                <i id="darkModeIcon" class="bi {% if theme == 'dark' %}bi-sun{% else %}bi-moon{% endif %}"></i>
+            </button>
+            {% endif %}
+
+        </head>
+
+        <body class="{% if request.session.theme == 'dark' %}dark-mode{% endif %}">
+            <!-- Navbar -->
+            {% if user.is_authenticated %}
+            <nav id="navbar" class="navbar navbar-expand-lg {% if theme == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %}">
+                <div class="container-fluid">
+                    
+                    <div class="navbar-brand d-flex align-items-center">
+                        <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 50px; width: auto; padding-left: 10px; padding-right: 10px;">
+                        <h4>dodoStore</h4>
+                    </div>
+                    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            {% if not user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:login' %}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:register' %}">Register</a>
+                            </li>
+                            {% else %}
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'main:main' %}">Home</a>
+                            </li>
+                            <li class="nav-item"></li>
+                                <a class="nav-link" href="{% url 'main:product_list' %}">Products</a>
+                            </li>
+                            <li class="nav-item"></li>
+                                <a class="nav-link" href="#"> Cart</a>
+                            </li>
+                            <li class="nav-item"></li>
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                            <li class="nav-item"></li>
+                                <a class="nav-link" href="#">FAQs</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    My Account
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <i class="bi bi-person-circle"></i> {{ user.username}}
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'main:logout' %}">
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <button id="darkModeToggle" class="btn btn-outline-secondary ms-lg-3 mt-2 mt-lg-0">
+                                <i id="darkModeIcon" class="bi {% if theme == 'dark' %}bi-sun{% else %}bi-moon{% endif %}"></i>
+                            </button>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            {% endif %}
+
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            <!-- Footer -->
+            {% if user.is_authenticated %}
+            <footer class="text-center py-4 {% if theme == 'dark' %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
+                <p class="mb-0">Last Login Session: {{ user.last_login }}</p>
+                <p class="mb-0">© 2024 DodoStore. All rights reserved.</p>
+            </footer>
+            {% endif %}
+
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Dark Mode Toggle Script -->
+            <script>
+                const toggleButton = document.getElementById('darkModeToggle');
+                const darkModeIcon = document.getElementById('darkModeIcon');
+                const navbar = document.getElementById('navbar');
+                const footer = document.querySelector('footer');
+                const dropdown = document.querySelector('dropdown');
+
+                toggleButton.addEventListener('click', function() {
+                    fetch('/toggle-theme/')
+                        .then(response => {
+                            if (response.ok) {
+                                darkModeIcon.classList.toggle('bi-sun');
+                                darkModeIcon.classList.toggle('bi-moon');
+                                document.body.classList.toggle('dark-mode');
+                                navbar.classList.toggle('navbar-dark');
+                                navbar.classList.toggle('navbar-light');
+                                navbar.classList.toggle('bg-dark');
+                                navbar.classList.toggle('bg-light');
+                                footer.classList.toggle('bg-dark');
+                                footer.classList.toggle('bg-light');
+                                footer.classList.toggle('text-light');
+                                footer.classList.toggle('text-dark');
+                                dropdownMenus.forEach(function(dropdown) {
+                                dropdown.classList.toggle('dropdown-menu-dark');
+                                dropdown.classList.toggle('dropdown-menu-light');
+                                });
+                            } else {
+                                console.error('Failed to toggle theme.');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            </script>
+
+            <!-- image preview script -->
+            <script>
+            function previewImage(event) {
+                const imagePreview = document.getElementById('imagePreview');
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';  // Make sure the image is displayed.
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    imagePreview.src = '#';  // Reset the preview if no file is selected.
+                    imagePreview.style.display = 'none';
+                }
+            }
+            </script>
+            
+        </body>
+        </html>
+        ```
+        Pada berkas `base.html` ini, saya menerapkan juga sebuah tombol yang akan mengubah tampilan tema `dark mode` dan `light mode`, saya juga menambahkan tampilan `navbar` pada berkas ini, disertai juga beberapa *script* yang akan menerima `eventListener` untuk mengembalikan respon dari pengguna untuk aksi tertentu.
+
+        Untuk halaman **Login**, saya menerapkannya dengan menambahkan logo diatas loginnya dan menggunakan inputfield yang sesuai
+        ```html
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block meta %}
+        <title>Login</title>
+        {% endblock meta %}
+
+        {% block content %}
+        <div class="min-vh-100 d-flex justify-content-center align-items-center {% if theme == 'dark' %} bg_dark {% else %} bg_light {% endif %}">
+
+        <div class="w-100" style="max-width: 400px;">
+            
+            <div class="d-flex flex-row justify-content-center align-items-center ">
+            <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 100px; width: auto; padding-left: 10px; padding-right: 10px;">
+            </div>
+
+            <h2 class="text-center mb-4">Login</h2>
+            
+            <form method="POST" action="">
+            {% csrf_token %}
+
+            <div class="form-floating mb-3">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
+                <label for="username">Username</label>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+                <label for="password">Password</label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </form>
+            
+            {% if messages %}
+            <div class="mt-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div class="text-center mt-3">
+            <p>Don't have an account? <a href="{% url 'main:register' %}">Register Now</a></p>
+            </div>
+        
+        </div>
+        </div>
+        {% endblock content %}
+        ```
+
+        Untuk **Register**, *template* yang saya gunakan kurang lebih sama dengan menampilkan logo dan `input fields` yang berlaku:
+        ```html
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block meta %}
+        <title>Register</title>
+        {% endblock meta %}
+
+        {% block content %}
+        <div class="min-vh-100 d-flex justify-content-center align-items-center {% if theme == 'dark' %} bg_dark {% else %} bg_light {% endif %}">
+        
+        <div class="w-100" style="max-width: 400px;">
+        
+            <div class="d-flex flex-row justify-content-center align-items-center ">
+            <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 100px; width: auto; padding-left: 10px; padding-right: 10px;">
+            </div>
+        
+            <h2 class="text-center mb-4">Create your account</h2>
+        
+            <form method="POST" action="">
+            {% csrf_token %}
+        
+            <div class="form-floating mb-3">
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
+                <label for="username">Username</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" name="password1" class="form-control" id="password1" placeholder="Password" required>
+                <label for="password1">Password</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" name="password2" class="form-control" id="password2" placeholder="Confirm Password" required>
+                <label for="password2">Confirm Password</label>
+            </div>
+
+            <label for="usable_password">Password-based authentication</label>
+
+            <div class="form-floating mb-3">
+                
+                <div id="id_usable_password" class="radiolist inline {% if theme == 'dark' %}dark{% endif %}">
+                    <div>
+                        <label for="id_usable_password_0">
+                            <input type="radio" name="usable_password" value="true" class="radiolist inline" id="id_usable_password_0" checked>
+                            Enabled
+                        </label>
+                    </div>
+            
+                    <div>
+                        <label for="id_usable_password_1">
+                            <input type="radio" name="usable_password" value="false" class="radiolist inline" id="id_usable_password_1">
+                            Disabled
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+
+            {% if messages %}
+            <div class="mt-4">
+            {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="text-center mt-3">
+            <p>Already have an account? <a href="{% url 'main:login' %}">Login here</a></p>
+            </div>
+        </div>
+        </div>
+        {% endblock content %}
+        ```
+
+        Sebelum memodifikasi halaman tambah product, saya terlebih dahulu menambahkan *field* baru di `main/models.py` saya, yaitu `ImageField` yang akan menerima gambar produk, dan kemudian saya juga menambahkan di `main/forms.py` juga, kemudiann saya `makemigrations` dan `migrate` untuk menerapkan perubahan yang sesuai untuk *database*nya. Hal ini juga menyebabkan beberapa perubahan di `main/views.py` saya untuk fungsi tertentu, yang memerlukan perubahan sedikit sebagai berikut:
+        ```python
+        ...
+        def add_product_to_list(request):
+            if request.method == 'POST':
+                form = ProductForm(request.POST, request.FILES)
+                if form.is_valid():
+                    add_product = form.save(commit=False)
+                    add_product.user = request.user
+                    add_product.save()
+                    return redirect('main:main')
+            else:
+                form = ProductForm()
+
+            context = {'form': form}
+            return render(request, "add_product_to_list.html", context)
+        
+        ...
+        def toggle_theme(request):
+            if 'theme' in request.session:
+                request.session['theme'] = 'light' if request.session['theme'] == 'dark' else 'dark'
+            else:
+                request.session['theme'] = 'dark'
+
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        def edit_product_info(request, id):
+            product = Product.objects.get(pk=id)
+            form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+
+            if form.is_valid() and request.method == "POST":
+                form.save()
+                return HttpResponseRedirect(reverse('main:product_list'))
+
+            context = {'form': form, 'product': product}
+            return render(request, "edit_product_info.html", context)
+        ```
+        hal ini dilakukan untuk mengakomodasi *files* yang akan dimasukkan dengan `request.FILES` dari pengguna dalam bentuk gambar, baik saat menambahkan produk atau mengedit atribut dari objek produk. Saya juga menambahkan `toggle_theme` yang akan mengakomodasi logika untuk merubah latar sesuai dengan `eventListener` yang diminta dari pengguna.
+
+        Lalu untuk **tambah product**, saya membuat *input field* untuk tiap atribut yang dapat dimasukkan oleh pengguna, dengan implementasi sebagai berikut:
+        ```html
+        {% extends 'base.html' %}
+        {% block content %}
+        <h1>Add New Product</h1>
+
+        <form method="POST", enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="formGroupInput1" class="form-label">Product Name</label>
+            <div class="form-floating mb-3">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" value="{{ form.name.value|default_if_none:'' }}" required>
+                <label for="name">Product Name</label>
+            </div>
+
+            <label for="productImage">Product Image</label>
+            <div class="form-floating mb-3">
+                <input class="form-control" type="file" name="image" id="productImage" accept="image/*" onchange="previewImage(event)">
+            </div>
+
+            <div class="image-preview-container" style="width: 250px; height: 250px;">
+                <img id="imagePreview" src="#" alt="Image Preview" class="image-preview" style="max-width: 100%; max-height: 100%; display: none;">
+            </div>
+
+            <label for="formGroupInput2" class="form-label">Product Price</label>
+            <div class="form-floating mb-3">
+                <input type="number" name="price" class="form-control" id="price" placeholder="Product Price" value="{{ form.price.value|default_if_none:'' }}" required>
+                <label for="price">Product Price</label>
+            </div>
+
+            <label for="formGroupInput3" class="form-label">Product Description</label>
+            <div class="form-floating">
+                <textarea class="form-control" name="description" placeholder="Product Description" id="floatingTextarea2" style="height: 150px" required>{{ form.description.value|default_if_none:'' }}</textarea>
+                <label for="floatingTextarea2">Product Description</label>
+            </div>
+
+            <label for="formGroupInput4" class="form-label">Stock</label>
+            <div class="form-floating mb-3">
+                <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock" value="{{ form.stock.value|default_if_none:'' }}" required>
+                <label for="stock">Stock</label>
+            </div>
+
+            <label for="formGroupInput5" class="form-label">Category</label>
+            <div class="form-floating mb-3">
+                <input type="text" name="category" class="form-control" id="category" placeholder="Category" value="{{ form.category.value|default_if_none:'' }}" required>
+                <label for="category">Category</label>
+            </div>
+
+            <div class="form-actions mt-3">
+                <input type="submit" class="btn btn-outline-secondary" value="Add Product">
+                <a href="{% url 'main:product_list' %}" class="btn btn-outline-secondary">Return to Products</a>
+            </div>
+        </form>
+
+        {% endblock %}
+        ```
+
+    - Kustomisasi halaman daftar *product* menjadi lebih menarik dan *responsive*. Kemudian, perhatikan kondisi berikut:
+        - Jika pada aplikasi belum ada *product* yang tersimpan, halaman daftar *product* akan menampilkan gambar dan pesan bahwa belum ada *product* yang terdaftar.
+        - Jika sudah ada *product* yang tersimpan, halaman daftar *product* akan menampilkan detail setiap *product* dengan menggunakan *card* (tidak boleh sama persis dengan desain pada Tutorial!).
+        
+        Untuk halaman **daftar product** saya menggunakan template `product_list.html` yang berisikan:
+        ```html
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block content %}
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Product List - DodoStore</title>
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+            <style>
+                .card {
+                    overflow: hidden;
+                    position: relative;
+                    transition: transform 0.3s; background-color: 0.5s; color: 0.5s;
+                }
+                .card:hover {
+                    transform: scale(1.05);
+                }
+                .card-body {
+                    transition: transform 0.3s; background-color: 0.5s; color: 0.5s;;
+                }
+                .card-description {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: #fff;
+                    padding: 20px;
+                    transform: translateY(100%);
+                    transition: transform 0.3s; background-color: 0.5s; color: 0.5s;
+                    overflow-y: auto;
+                    height: 50%;
+                }
+                .card:hover .card-description {
+                    transform: translateY(0);
+                }
+                .card-description p {
+                    text-align: left;
+                }
+                .card-description .btn-container {
+                    text-align: right;
+                    margin-top: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container mt-5">
+                <h1>Product List</h1>
+                
+                <div class="btn-container">
+                    <div style="display: flex; justify-content: flex-end; padding-bottom: 10px;">
+                        <a href="{% url 'main:add_product_to_list' %}">
+                            <button type="button" class="btn btn-outline-secondary" style="font-size: 1.1rem; padding: 10px 20px;">
+                                <i class="bi bi-cart-check-fill"></i> Add Product
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                {% if products %}
+                    <div class="row">
+                        {% for product in products %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card" style="width: 18rem;">
+                                
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/PLACEHOLDER.jpeg' %}" class= "card-img-top" alt="Default Product">
+                                {% endif %}
+
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        {{ product.name }}
+                                    </h5>
+                                    <p class="card-text">
+                                        Rp. {{ product.price }}
+                                    </p>
+                                </div>
+
+                                <div class="card-description">
+                                    <p>{{ product.description }}</p>
+                                    <!-- Buttons aligned to the right under the description -->
+                                    <div class="btn-container"style=" padding: 20px 0px 0px 0px;">
+
+                                        <a href="{% url 'main:edit_product_info' product.pk %}">
+                                            <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </button>
+
+                                        </a><a href="{% url 'main:delete_product' product.pk %}">
+                                            <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+
+                <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+                    <h3 class="text-center">No products found...</h3>
+                    <img src="{% static 'images/NO_PRODUCT_FOUND.png' %}" alt="No Product Found" style="height: 125px; width: auto;">
+                </div>
+                
+                {% endif %}
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
+        </body>
+        </html>
+        {% endblock content %}
+        ```
+
+        Berkas ini mengimplementasikan logika jika tidak ditemukan adanya *instance product* yang terhubung dengan pengguna, dia akan menampilkan *No products found...* dan sebuah gambar yang disusun dengan tipe susunan `flex-column`. Tiap produk akan ditampilkan dalam bentuk *card*, dengan *styling* yang dilakukan dalam berkas. Detail yang akan ditampilkan adalah nama, harga, dan deskripsi saja demi tujuan lebih simplistik. Untuk deskripsi, dia hanya akan muncul ketika terdeksi di *hover*.
+
+    - Untuk setiap *card product*, buatlah dua buah *button* untuk mengedit dan menghapus *product* pada *card* tersebut!
+    
+        Untuk tiap *card product*, saya melakukan implementasi jika terdeteksi aksi *hover* pada *card* sebuah *instance product*, dia akan menampilkan deskripsi dan dibawah deskripsi tersebut, baru terdapat tombol *edit* dan *delete* yang khusus untuk *instance product* tersebut.
+
+    - Buatlah *navigation bar (navbar)* untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran *device*, khususnya *mobile* dan *desktop*.
+
+        Untuk implementasi *navbar* saya lakukan di berkas `base.html`, dengan implementasi sebagai berikut:
+        ```html
+        <!-- Navbar -->
+        {% if user.is_authenticated %}
+        <nav id="navbar" class="navbar navbar-expand-lg {% if theme == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %}">
+            <div class="container-fluid">
+                
+                <div class="navbar-brand d-flex align-items-center">
+                    <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 50px; width: auto; padding-left: 10px; padding-right: 10px;">
+                    <h4>dodoStore</h4>
+                </div>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        {% if not user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:register' %}">Register</a>
+                        </li>
+                        {% else %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'main:main' %}">Home</a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="{% url 'main:product_list' %}">Products</a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="#"> Cart</a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item"></li>
+                            <a class="nav-link" href="#">FAQs</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                My Account
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="bi bi-person-circle"></i> {{ user.username}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'main:logout' %}">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <button id="darkModeToggle" class="btn btn-outline-secondary ms-lg-3 mt-2 mt-lg-0">
+                            <i id="darkModeIcon" class="bi {% if theme == 'dark' %}bi-sun{% else %}bi-moon{% endif %}"></i>
+                        </button>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        {% endif %}
+        ```
+
+        Pada *navbar* ini, saya menampilkan logo dan nama website saya, dan *navbar* ini hanya akan ditampilkan ketika pengguna sudah melakukan autentikasi saja, untuk tujuan keamanan. Jika pengguna belum terautentikasi, makan hanya akan ditampilkan halaman *login* dan *register*. *Navbar* ini dibuat responsif terhadap *toggleButton* *darkmode* dan *lightmode* yang sudah saya implemen. Sejauh ini, saya telah mengimplementasikan untuk *Home*, *Products*, *My Account* saja, untuk *cart*, *about*, dan *FAQs* masih merupakan *placeholder*. Untuk tampilan *My Account* merupakan *dropdown* yang ketika ditekan akan menampilkan nama pengguna dan tombol untuk *logout*.

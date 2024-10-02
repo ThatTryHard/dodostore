@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Edit Product Info</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label for="formGroupInput1" class="form-label">Product Name</label>
+        <div class="form-floating mb-3">
+            <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" value="{{ form.name.value }}" required>
+            <label for="name">Product Name</label>
+        </div>
+
+        <label for="productImage">Product Image</label>
+        <div class="form-floating mb-3">
+            <input class="form-control"  type="file" name="image" id="productImage" accept="image/*" onchange="previewImage(event)">
+        </div>
+
+        <div class="image-preview-container" style="width: 250px; height: 250px;">
+            {% if product.image %}
+            <img id="imagePreview" src="{{ product.image.url }}" alt="Current Image" class="image-preview" style="max-width: 100%; max-height: 100%; display: block; " >
+            {% else %}
+            <img id="imagePreview" src="#" alt="Image Preview" class="image-preview" style="max-width: 100%; max-height: 100%; display: none; " >
+            {% endif %}
+        </div>
+
+        <label for="formGroupInput2" class="form-label">Product Price</label>
+        <div class="form-floating mb-3">
+            <input type="number" name="price" class="form-control" id="price" placeholder="Price" value="{{ form.price.value }}" required>
+            <label for="price">Price</label>
+        </div>
+
+        <label for="formGroupInput3" class="form-label">Stock</label>
+        <div class="form-floating mb-3">
+            <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock" value="{{ form.stock.value }}" required>
+            <label for="stock">Stock</label>
+        </div>
+
+        <label for="formGroupInput4" class="form-label">Category</label>
+        <div class="form-floating mb-3">
+            <input type="text" name="category" class="form-control" id="category" placeholder="Category" value="{{ form.category.value }}" required>
+            <label for="category">Category</label>
+        </div>
+
+        <label for="formGroupInput5" class="form-label">Product Description</label>
+        <div class="form-floating">
+            <textarea class="form-control" name="description" placeholder="Product Description" style="height: 150px" id="description" required>{{ form.description.value }}</textarea>
+            <label for="description">Product Description</label>
+        </div>
+
+        <!-- Submit button -->
+        <div class="form-actions mt-3">
+            <input type="submit" class="btn btn-outline-secondary" value="Edit Product Info">
+            <a href="{% url 'main:product_list' %}" class="btn btn-outline-secondary">Return to Products</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

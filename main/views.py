@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from main.models import Product
 from main.forms import ProductForm
 from django.http import HttpResponse, HttpResponseRedirect
@@ -9,17 +9,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 import datetime
+from django.conf import settings
 
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-    product_list = Product.objects.filter(user=request.user)
 
     context = {
         'app_name' : 'Dodo Store',
         'name': request.user.username,
         'class': 'PBP A',
-        # 'product_list': product_list,
         'last_login': request.COOKIES['last_login'],
     }
 
@@ -31,16 +30,19 @@ def product_list(request):
     return render(request, 'product_list.html', {'products': products})
 
 def add_product_to_list(request):
-    form = ProductForm(request.POST or None)
-
-    if form.is_valid() and request.method == "POST":
-        add_product = form.save(commit=False)
-        add_product.user = request.user
-        add_product.save()
-        return redirect('main:main')
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            add_product = form.save(commit=False)
+            add_product.user = request.user
+            add_product.save()
+            return redirect('main:main')
+    else:
+        form = ProductForm()
 
     context = {'form': form}
     return render(request, "add_product_to_list.html", context)
+
 
 def show_xml(request):
     data = Product.objects.all()
@@ -91,3 +93,28 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def toggle_theme(request):
+    if 'theme' in request.session:
+        request.session['theme'] = 'light' if request.session['theme'] == 'dark' else 'dark'
+    else:
+        request.session['theme'] = 'dark'
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+def edit_product_info(request, id):
+    product = Product.objects.get(pk=id)
+    form = ProductForm(request.POST or None, request.FILES or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:product_list'))
+
+    context = {'form': form, 'product': product}
+    return render(request, "edit_product_info.html", context)
+
+def delete_product(request, id):
+    product = Product.objects.get(pk = id)
+    product.delete()
+
+    return HttpResponseRedirect(reverse('main:product_list'))

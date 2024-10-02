@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -7,24 +8,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DodoStore</title>
-    
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Welcome to the {{ app_name }}</h1>
-        </div>
-        <div class="details">
-            <h5>Name:</h5>
-            <p>{{ name }}</p>
-            <h5>Class:</h5>
-            <p>{{ class }}</p>
-        </div>
-        <a href="{% url 'main:product_list' %}" class="button">View Products</a>
-        <a href="{% url 'main:add_product_to_list' %}" class="button">Add Products</a>
-        <a href="{% url 'main:logout' %}" class="button">Logout</a>
-        <h5>Sesi terakhir login: {{ last_login }}</h5>
+    <h3 style="padding-top: 10px;">Welcome to {{ app_name }}, {{ user.username }}!!</h3>
+    <div class="min-vh-100 d-flex flex-column justify-content-center" style="min-height: 150vh;">
+        <h1 style="text-align: center; padding-top: 40px;">Suit Your Style</h1>
+
+        <section class="container-fluid" style="padding-top: 10px;">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="{% static 'images/XML.png' %}" class="d-block w-100 carousel-img" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'images/JSON.png' %}" class="d-block w-100 carousel-img" alt="...">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="{% static 'images/XML_by_ID.png' %}" class="d-block w-100 carousel-img" alt="...">
+                    </div>
+                </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+        <div style="height: 100vh;"></div>
     </div>
+
+    
 </body>
 </html>
 {% endblock content %}

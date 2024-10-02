@@ -1,4 +1,5 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <!DOCTYPE html>
@@ -7,74 +8,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List - DodoStore</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
-        .product-list {
-            list-style: none;
-            padding: 0;
+        .card {
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s; background-color: 0.5s; color: 0.5s;
         }
-        .product-item {
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card-body {
+            transition: transform 0.3s; background-color: 0.5s; color: 0.5s;;
+        }
+        .card-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: #fff;
-            margin: 15px 0;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.3s; background-color: 0.5s; color: 0.5s;
+            overflow-y: auto;
+            height: 50%;
         }
-        .product-item img {
-            border-radius: 8px;
-            max-width: 150px;
-            margin-right: 20px;
+        .card:hover .card-description {
+            transform: translateY(0);
         }
-        .product-details {
-            flex: 1;
+        .card-description p {
+            text-align: left;
         }
-        .product-details strong {
-            display: block;
-            color: #007bff;
+        .card-description .btn-container {
+            text-align: right;
+            margin-top: 10px;
         }
-        .product-details p {
-            margin: 5px 0;
-            line-height: 1.6;
-        }
-        .no-products {
-            text-align: center;
-            font-size: 1.2em;
-            color: #777;
-        }
-        
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <h1>Product List</h1>
+        
+        <div class="btn-container">
+            <div style="display: flex; justify-content: flex-end; padding-bottom: 10px;">
+                <a href="{% url 'main:add_product_to_list' %}">
+                    <button type="button" class="btn btn-outline-secondary" style="font-size: 1.1rem; padding: 10px 20px;">
+                        <i class="bi bi-cart-check-fill"></i> Add Product
+                    </button>
+                </a>
+            </div>
+        </div>
 
         {% if products %}
-            <table>
-                <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Description</th>
-                <th>Stock</th>
-                <th>Category</th>
-                </tr>
-            
+            <div class="row">
                 {% for product in products %}
-                <tr>
-                <td>{{product.name}}</td>
-                <td>{{product.price}}</td>
-                <td>{{product.description}}</td>
-                <td>{{product.stock}}</td>
-                <td>{{product.category}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% else %}
-        <p class="no-products">New products coming soon!</p>
-        {% endif %}
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'images/PLACEHOLDER.jpeg' %}" class= "card-img-top" alt="Default Product">
+                        {% endif %}
 
-        <a href="/" class="button">Return to Main Page</a>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ product.name }}
+                            </h5>
+                            <p class="card-text">
+                                Rp. {{ product.price }}
+                            </p>
+                        </div>
+
+                        <div class="card-description">
+                            <p>{{ product.description }}</p>
+                            <!-- Buttons aligned to the right under the description -->
+                            <div class="btn-container"style=" padding: 20px 0px 0px 0px;">
+
+                                <a href="{% url 'main:edit_product_info' product.pk %}">
+                                    <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </button>
+
+                                </a><a href="{% url 'main:delete_product' product.pk %}">
+                                    <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                        <i class="bi bi-trash3"></i> Delete
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+
+        <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+            <h3 class="text-center">No products found...</h3>
+            <img src="{% static 'images/NO_PRODUCT_FOUND.png' %}" alt="No Product Found" style="height: 125px; width: auto;">
+        </div>
+        
+        {% endif %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 </body>
 </html>
 {% endblock content %}
