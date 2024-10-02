@@ -1102,6 +1102,7 @@
         ```
 
         Sebelum memodifikasi halaman tambah product, saya terlebih dahulu menambahkan *field* baru di `main/models.py` saya, yaitu `ImageField` yang akan menerima gambar produk, dan kemudian saya juga menambahkan di `main/forms.py` juga, kemudiann saya `makemigrations` dan `migrate` untuk menerapkan perubahan yang sesuai untuk *database*nya. Hal ini juga menyebabkan beberapa perubahan di `main/views.py` saya untuk fungsi tertentu, yang memerlukan perubahan sedikit sebagai berikut:
+
         ```python
         ...
         def add_product_to_list(request):
@@ -1119,6 +1120,7 @@
             return render(request, "add_product_to_list.html", context)
         
         ...
+
         def toggle_theme(request):
             if 'theme' in request.session:
                 request.session['theme'] = 'light' if request.session['theme'] == 'dark' else 'dark'
@@ -1138,7 +1140,7 @@
             context = {'form': form, 'product': product}
             return render(request, "edit_product_info.html", context)
         ```
-        hal ini dilakukan untuk mengakomodasi *files* yang akan dimasukkan dengan `request.FILES` dari pengguna dalam bentuk gambar, baik saat menambahkan produk atau mengedit atribut dari objek produk. Saya juga menambahkan `toggle_theme` yang akan mengakomodasi logika untuk merubah latar sesuai dengan `eventListener` yang diminta dari pengguna.
+        hal ini dilakukan untuk mengakomodasi *files* yang akan dimasukkan dengan `request.FILES` dari pengguna dalam bentuk gambar, baik saat menambahkan produk atau mengedit atribut dari objek produk. Saya juga menerapkan sebuah *preview box* untuk menampilkan gambar yang akan dimasukkan. Saya juga menambahkan `toggle_theme` yang akan mengakomodasi logika untuk merubah latar sesuai dengan `eventListener` yang diminta dari pengguna. Lalu, saya juga menambahkan `context_processors.py` di "project directory" dan ditambahkan ke `MIDDLEWARE` di `settings.py` untuk melakukan proses tema *dark* dan *light*nya.
 
         Lalu untuk **tambah product**, saya membuat *input field* untuk tiap atribut yang dapat dimasukkan oleh pengguna, dengan implementasi sebagai berikut:
         ```html
