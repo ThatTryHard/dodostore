@@ -1335,6 +1335,7 @@
 
         Untuk implementasi *navbar* saya lakukan di berkas `base.html`, dengan implementasi sebagai berikut:
         ```html
+        ...
         <!-- Navbar -->
         {% if user.is_authenticated %}
         <nav id="navbar" class="navbar navbar-expand-lg {% if theme == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %}">
@@ -1403,6 +1404,59 @@
         </nav>
 
         {% endif %}
+        ...
         ```
 
-        Pada *navbar* ini, saya menampilkan logo dan nama website saya, dan *navbar* ini hanya akan ditampilkan ketika pengguna sudah melakukan autentikasi saja, untuk tujuan keamanan. Jika pengguna belum terautentikasi, makan hanya akan ditampilkan halaman *login* dan *register*. *Navbar* ini dibuat responsif terhadap *toggleButton* *darkmode* dan *lightmode* yang sudah saya implemen. Sejauh ini, saya telah mengimplementasikan untuk *Home*, *Products*, *My Account* saja, untuk *cart*, *about*, dan *FAQs* masih merupakan *placeholder*. Untuk tampilan *My Account* merupakan *dropdown* yang ketika ditekan akan menampilkan nama pengguna dan tombol untuk *logout*.
+        Pada *navbar* ini, saya menampilkan logo dan nama website saya, dan *navbar* ini hanya akan ditampilkan ketika pengguna sudah melakukan autentikasi saja, untuk tujuan keamanan. Jika pengguna belum terautentikasi, makan hanya dapat menampilkan halaman *login* dan *register*. *Navbar* ini dibuat responsif terhadap *toggleButton* *darkmode* dan *lightmode* yang sudah saya implemen. Sejauh ini, saya telah mengimplementasikan untuk *Home*, *Products*, *My Account* saja, untuk *cart*, *about*, dan *FAQs* masih merupakan *placeholder*. Untuk tampilan *My Account* merupakan *dropdown* yang ketika ditekan akan menampilkan nama pengguna dan tombol untuk *logout*. Dan juga *button* untuk melakukan *toggle* *darkmode* dan *lightmode*.
+
+        Sebagai tambahan, saya juga memodifikasi `main.html` saya, dengan mengimplementasikan sebuah *carousel* untuk kebutuhan kedepannya
+        ```html
+        {% extends 'base.html' %}
+        {% load static %}
+        {% block content %}
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>DodoStore</title>
+        </head>
+        <body>
+            <h3 style="padding-top: 10px;">Welcome to {{ app_name }}, {{ user.username }}!!</h3>
+            <div class="min-vh-100 d-flex flex-column justify-content-center" style="min-height: 150vh;">
+                <h1 style="text-align: center; padding-top: 40px;">Suit Your Style</h1>
+
+                <section class="container-fluid" style="padding-top: 10px;">
+                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{% static 'images/XML.png' %}" class="d-block w-100 carousel-img" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/JSON.png' %}" class="d-block w-100 carousel-img" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'images/XML_by_ID.png' %}" class="d-block w-100 carousel-img" alt="...">
+                            </div>
+                        </div>
+
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </section>
+                <div style="height: 100vh;"></div>
+            </div>
+            
+        </body>
+        </html>
+        {% endblock content %}
+        ```
+        *Carousel* ini bersifat *auto scroll* dan bisa juga di buka untuk halaman selanjutnya, untuk saat ini, gambar yang ditampilkan masih berupa gambar-gambar *placeholder*.
