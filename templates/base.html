@@ -20,20 +20,20 @@
     
     {% if not user.is_authenticated %}
     <button id="darkModeToggle" class="btn btn-outline-secondary ms-lg-3 mt-2 mt-lg-0">
-        <i id="darkModeIcon" class="bi {% if theme == 'dark' %}bi-sun{% else %}bi-moon{% endif %}"></i>
+        <i id="darkModeIcon" class="bi {% if theme == 'dark' %} bi-sun {% else %} bi-moon {% endif %}"></i>
     </button>
     {% endif %}
 
 </head>
 
-<body class="{% if request.session.theme == 'dark' %}dark-mode{% endif %}">
+<body class="{% if request.session.theme == 'dark' %} dark-mode {% endif %}">
     <!-- Navbar -->
     {% if user.is_authenticated %}
     <nav id="navbar" class="navbar navbar-expand-lg {% if theme == 'dark' %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %}">
         <div class="container-fluid">
             
             <div class="navbar-brand d-flex align-items-center">
-                <img src="{% static 'images/LOGO.png' %}" alt="Logo" style="height: 50px; width: auto; padding-left: 10px; padding-right: 10px;">
+                <img src="/static/images/LOGO.png" alt="Logo" style="height: 50px; width: auto; padding-left: 10px; padding-right: 10px;">
                 <h4>dodoStore</h4>
             </div>
             

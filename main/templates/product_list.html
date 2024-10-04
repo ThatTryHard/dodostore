@@ -69,7 +69,7 @@
                         {% if product.image %}
                             <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
                         {% else %}
-                            <img src="{% static 'images/PLACEHOLDER.jpeg' %}" class= "card-img-top" alt="Default Product">
+                            <img src="/static/images/PLACEHOLDER.jpeg" class= "card-img-top" alt="Default Product">
                         {% endif %}
 
                         <div class="card-body">
@@ -106,7 +106,7 @@
 
         <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
             <h3 class="text-center">No products found...</h3>
-            <img src="{% static 'images/NO_PRODUCT_FOUND.png' %}" alt="No Product Found" style="height: 125px; width: auto;">
+            <img src="static/images/NO_PRODUCT_FOUND.png" alt="No Product Found" style="height: 125px; width: auto;">
         </div>
         
         {% endif %}

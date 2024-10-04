@@ -1462,3 +1462,15 @@
         {% endblock content %}
         ```
         *Carousel* ini bersifat *auto scroll* dan bisa juga di buka untuk halaman selanjutnya, untuk saat ini, gambar yang ditampilkan masih berupa gambar-gambar *placeholder*.
+
+### Tugas 6
+
+- Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
+
+- Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+
+- Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+
+- Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+
+- Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
