@@ -67,7 +67,7 @@
                     <div class="card" style="width: 18rem;">
                         
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
+                            <img src="/media/{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
                         {% else %}
                             <img src="/static/images/PLACEHOLDER.jpeg" class= "card-img-top" alt="Default Product">
                         {% endif %}
