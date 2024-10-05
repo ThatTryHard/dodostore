@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, include, re_path
 from main import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.static import serve
 
 app_name = 'main'
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path('edit-product-info/<uuid:id>', views.edit_product_info, name='edit_product_info'),
     path('delete/<uuid:id>', views.delete_product, name='delete_product'),
     path('toggle-theme/', views.toggle_theme, name='toggle_theme'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    re_path(r'^media/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)

@@ -14,12 +14,12 @@ from django.conf import settings
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
-
+    cookies = request.COOKIES
     context = {
         'app_name' : 'Dodo Store',
         'name': request.user.username,
         'class': 'PBP A',
-        'last_login': request.COOKIES['last_login'],
+        'last_login' : cookies.get('last_login', 'Not Available'),
     }
 
     return render(request, "main.html", context)
@@ -36,7 +36,7 @@ def add_product_to_list(request):
             add_product = form.save(commit=False)
             add_product.user = request.user
             add_product.save()
-            return redirect('main:main')
+            return redirect('main:product_list')
     else:
         form = ProductForm()
 

@@ -23,7 +23,7 @@
 
         <div class="image-preview-container" style="width: 250px; height: 250px;">
             {% if product.image %}
-            <img id="imagePreview" src="/media/{{ product.image.url }}" alt="Current Image" class="image-preview" style="max-width: 100%; max-height: 100%; display: block; " >
+            <img id="imagePreview" src="{{ product.image.url }}" alt="Current Image" class="image-preview" style="max-width: 100%; max-height: 100%; display: block; " >
             {% else %}
             <img id="imagePreview" src="#" alt="Image Preview" class="image-preview" style="max-width: 100%; max-height: 100%; display: none; " >
             {% endif %}

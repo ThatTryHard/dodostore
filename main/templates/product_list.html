@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List - DodoStore</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         .card {
@@ -67,9 +66,9 @@
                     <div class="card" style="width: 18rem;">
                         
                         {% if product.image %}
-                            <img src="/media/{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
+                            <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
                         {% else %}
-                            <img src="/static/images/PLACEHOLDER.jpeg" class= "card-img-top" alt="Default Product">
+                            <img src="{% static 'images/PLACEHOLDER.jpeg' %}" class= "card-img-top" alt="Default Product">
                         {% endif %}
 
                         <div class="card-body">
@@ -106,7 +105,7 @@
 
         <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
             <h3 class="text-center">No products found...</h3>
-            <img src="static/images/NO_PRODUCT_FOUND.png" alt="No Product Found" style="height: 125px; width: auto;">
+            <img src="{% static 'images/NO_PRODUCT_FOUND.png'%}" alt="No Product Found" style="height: 125px; width: auto;">
         </div>
         
         {% endif %}
