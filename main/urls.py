@@ -21,4 +21,5 @@ urlpatterns = [
     path('delete/<uuid:id>', views.delete_product, name='delete_product'),
     path('toggle-theme/', views.toggle_theme, name='toggle_theme'),
     re_path(r'^media/(?P<path>.*)$',serve,{'document_root':settings.MEDIA_ROOT}),
+    re_path(r'^static/(?P<path>.*)$',serve,{'document_root':settings.STATIC_ROOT}),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)
