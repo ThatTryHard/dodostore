@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from main.models import Product
 from main.forms import ProductForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core import serializers
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -10,6 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 import datetime
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.utils.html import strip_tags
 
 # Create your views here.
 @login_required(login_url='/login')
@@ -26,8 +29,9 @@ def show_main(request):
 
 def product_list(request):
     # Take all Product data from the database
-    products = Product.objects.filter(user=request.user)
-    return render(request, 'product_list.html', {'products': products})
+    # products = Product.objects.filter(user=request.user)
+    # context = {'products': products}
+    return render(request, 'product_list.html')
 
 def add_product_to_list(request):
     if request.method == 'POST':
@@ -45,11 +49,11 @@ def add_product_to_list(request):
 
 
 def show_xml(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    data = Product.objects.all()
+    data = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
@@ -82,6 +86,8 @@ def login_user(request):
             response = HttpResponseRedirect(reverse("main:main"))
             response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
 
     else:
         form = AuthenticationForm(request)
@@ -118,3 +124,30 @@ def delete_product(request, id):
     product.delete()
 
     return HttpResponseRedirect(reverse('main:product_list'))
+
+@csrf_exempt
+@require_POST
+def create_ajax(request):
+    if request.method == 'POST':
+        name = strip_tags(request.POST.get("name"))
+        price = strip_tags(request.POST.get("price"))
+        description = strip_tags(request.POST.get("description"))
+        stock = strip_tags(request.POST.get("stock"))
+        category = strip_tags(request.POST.get("category"))
+        image = strip_tags(request.FILES.get("image"))
+        user = request.user
+
+        new_product = Product(
+            name=name,
+            price=price,
+            description=description,
+            stock=stock,
+            category=category,
+            image=image,
+            user=user
+        )
+        new_product.save()
+
+        return JsonResponse({'message': 'Product created successfully!'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)

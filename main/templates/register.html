@@ -18,25 +18,23 @@
     <form method="POST" action="">
       {% csrf_token %}
   
+      <label class = "form-floating" for="username">Username</label>
       <div class="form-floating mb-3">
         <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
-        <label for="username">Username</label>
       </div>
 
+      <label class = "form-floating" for="password1">Password</label>
       <div class="form-floating mb-3">
         <input type="password" name="password1" class="form-control" id="password1" placeholder="Password" required>
-        <label for="password1">Password</label>
       </div>
 
+      <label class = "form-floating" for="password2">Confirm Password</label>
       <div class="form-floating mb-3">
         <input type="password" name="password2" class="form-control" id="password2" placeholder="Confirm Password" required>
-        <label for="password2">Confirm Password</label>
       </div>
 
-      <label for="usable_password">Password-based authentication</label>
-
+      <label class = "form-floating" for="usable_password">Password-based authentication</label>
       <div class="form-floating mb-3">
-        
         <div id="id_usable_password" class="radiolist inline {% if theme == 'dark' %}dark{% endif %}">
             <div>
                 <label for="id_usable_password_0">

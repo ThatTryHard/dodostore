@@ -1467,10 +1467,452 @@
 
 - Jelaskan manfaat dari penggunaan JavaScript dalam pengembangan aplikasi web!
 
-- Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+    JavaScript memainkan peran penting dalam pengembangan aplikasi web modern karena beberapa manfaat berikut:
 
-- Mengapa kita perlu menggunakan decorator csrf_exempt pada view yang akan digunakan untuk AJAX POST?
+    - **Interaktif:** JavaScript memungkinkan halaman web menjadi lebih interaktif, misalnya dengan menampilkan animasi, memvalidasi input pengguna, atau memperbarui konten secara dinamis tanpa memuat ulang seluruh halaman (AJAX).
 
-- Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (backend) juga. Mengapa hal tersebut tidak dilakukan di frontend saja?
+    - **Responsif:** Aplikasi web yang dibangun dengan JavaScript bisa lebih responsif karena tidak memerlukan request ke server untuk setiap perubahan kecil. Misalnya, pengguna dapat berinteraksi dengan elemen di halaman yang langsung merespon tanpa waktu tunggu.
 
-- Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+    - **Kompatibilitas Lintas Platform:** JavaScript adalah bahasa pemrograman yang dapat dijalankan di berbagai platform dan perangkat, menjadikannya solusi yang fleksibel dan universal untuk pengembangan web.
+
+    - **Penggunaan di *Frontend* dan *Backend*:** Dengan teknologi seperti `Node.js`, JavaScript kini juga dapat digunakan di sisi server (*backend*), sehingga developer bisa menggunakan satu bahasa untuk seluruh pengembangan aplikasi.
+
+- Jelaskan fungsi dari penggunaan `await` ketika kita menggunakan `fetch()`! Apa yang akan terjadi jika kita tidak menggunakan `await`?
+
+    `await` digunakan dalam JavaScript untuk menunggu penyelesaian dari operasi *asynchronous* seperti `fetch()`. Fungsi `fetch()` biasanya digunakan untuk mengambil data dari server, namun proses pengambilan data ini bersifat *asynchronous* (tidak langsung selesai). Tanpa `await`, program akan melanjutkan eksekusi kode berikutnya sebelum `fetch()` selesai.
+
+    Fungsi `await`: `await` memastikan bahwa kode akan menunggu sampai hasil dari `fetch()` siap (misalnya, data telah berhasil diambil dari server) sebelum melanjutkan ke baris kode berikutnya. Ini berguna untuk menangani hasil dari operasi asinkron dengan urutan yang benar.
+
+    Apa yang Terjadi Jika Tidak Menggunakan `await`: Jika `await` tidak digunakan, *JavaScript* akan melanjutkan eksekusi kode meskipun data belum sepenuhnya diambil, sehingga variabel yang seharusnya menyimpan data dari server mungkin kosong atau belum siap, yang bisa menyebabkan error atau hasil yang tidak diinginkan.
+
+- Mengapa kita perlu menggunakan decorator `csrf_exempt` pada view yang akan digunakan untuk AJAX POST?
+
+    CSRF (*Cross-Site Request Forgery*) adalah serangan di mana pengguna yang tidak sah mencoba melakukan aksi pada aplikasi web atas nama pengguna yang sudah diautentikasi. Django memiliki perlindungan bawaan untuk serangan CSRF ini dengan menggunakan token CSRF pada setiap request POST.
+
+    Menggunakan `csrf_exempt`: Jika kita melakukan AJAX POST dan tidak memasukkan token CSRF ke dalam request, Django akan menolak request tersebut karena dianggap tidak aman. Dalam kasus di mana CSRF tidak menjadi ancaman (misalnya untuk endpoint tertentu yang tidak sensitif atau pada situasi internal), kita bisa menggunakan decorator `csrf_exempt` pada view. Ini akan menonaktifkan pengecekan token CSRF untuk view tertentu.
+
+    Risiko: Penggunaan `csrf_exempt` harus hati-hati karena membuka celah keamanan. Jika view tersebut melibatkan data sensitif, lebih baik tetap menggunakan token CSRF untuk menghindari serangan.
+
+- Pada tutorial PBP minggu ini, pembersihan data input pengguna dilakukan di belakang (*backend*) juga. Mengapa hal tersebut tidak dilakukan di *frontend* saja?
+    Walaupun pembersihan data di *frontend* (seperti validasi input atau sanitasi data) penting untuk memberikan pengalaman pengguna yang baik, selalu ada risiko bahwa data yang dikirim dari *frontend* dapat dimanipulasi oleh pengguna jahat.
+
+    - Keamanan: Data yang dikirim dari *frontend* bisa diubah oleh pengguna atau pihak ketiga sebelum sampai ke server. Oleh karena itu, pembersihan dan validasi di *backend* sangat penting untuk mencegah data berbahaya (seperti skrip berbahaya) memasuki sistem atau database.
+
+    - Kepastian Konsistensi: Dengan validasi di *backend*, kita bisa memastikan bahwa data yang diterima di server sudah sesuai standar yang diinginkan tanpa bergantung pada *frontend*. Ini penting karena validasi *frontend* bisa di-*bypass* jika seseorang mematikan *JavaScript* di browser mereka.
+
+    - Kontrol yang Lebih Baik: *Backend* memiliki akses lebih besar ke sumber daya server dan database, sehingga bisa melakukan validasi dan pembersihan data yang lebih kompleks dibanding *frontend*, misalnya mengecek duplikasi data atau memverifikasi identitas pengguna.
+
+    Dengan kombinasi validasi di *frontend* dan *backend*, aplikasi menjadi lebih aman, stabil, dan bisa diandalkan untuk memproses input yang benar-benar bersih dari masalah.
+
+- Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial)!
+
+    - Mengubah tugas 5 yang telah dibuat sebelumnya menjadi menggunakan AJAX.
+
+    1. AJAX `GET`
+
+        - Ubahlah kode `cards` data *product* agar dapat mendukung AJAX `GET`.
+            Pada bagian `cards` untuk tiap *product*, saya mengubahnya menjadi sebuah *script*, yang dimasukkan di `main/product_list.html`. Lebih tepatnya, yaitu bagian:
+            ```html
+            ...
+            {% if products %}
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card" style="width: 18rem;">
+                            
+                            {% if product.image %}
+                                <img src="{{ product.image.url }}" class= "card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <img src="{% static 'images/PLACEHOLDER.jpeg' %}" class= "card-img-top" alt="Default Product">
+                            {% endif %}
+
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ product.name }}
+                                </h5>
+                                <p class="card-text">
+                                    Rp. {{ product.price }}
+                                </p>
+                            </div>
+
+                            <div class="card-description">
+                                <p>{{ product.description }}</p>
+                                    
+                                <div class="btn-container"style=" padding: 20px 0px 0px 0px;">
+
+                                    <a href="{% url 'main:edit_product_info' product.pk %}">
+                                        <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+
+                                    </a><a href="{% url 'main:delete_product' product.pk %}">
+                                        <button class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                            <i class="bi bi-trash3"></i> Delete
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+
+            <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+                <h3 class="text-center">No products found...</h3>
+                <img src="{% static 'images/NO_PRODUCT_FOUND.png'%}" alt="No Product Found" style="height: 125px; width: auto;">
+            </div>
+            
+            {% endif %}
+            ...
+            ```
+            lalu diganti dengan
+            ```html
+            ...
+            <div id="product_cards"></div>
+            ...
+            ```
+
+            Kemudian, saya membuat sebuah block `<script>` yang berisikan fungsi `getProducts()` yang menggunakan *fetch API* ke data JSON secara asinkron, dan setelah di *fetch*, fungsi `then()` akan melakukan *parsing data* JSON menjadi objek *JavaScript*. dan fungsi `refreshProducts()` yang digunakan untuk melakukan *refresh* secara asinkron.
+
+            ```html
+            ...
+            <script>
+                async function getProducts() {
+                    return fetch("{% url 'main:show_json' %}").then((res) => res.json());
+                }
+
+                async function refreshProducts() {
+                    document.getElementById("product_cards").innerHTML = "";
+                    document.getElementById("product_cards").className = "";
+                    const products = await getProducts();
+                    let htmlString = "";
+                    let classNameString = "";
+
+                    if (products.length === 0) {
+                        classNameString = "min-vh-100 d-flex flex-column justify-content-center align-items-center";
+                        htmlString = `
+                            <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+                                <img src="{% static 'images/NO_PRODUCT_FOUND.png' %}" alt="No Product Found" class="mb-4" style="width: 125px;">
+                                <h3 class="text-center">No products found...</h3>
+                            </div>
+                        `;
+                    } else {
+                        classNameString = "row";
+
+                        products.forEach((product) => {
+                            const name = DOMPurify.sanitize(product.fields.name);
+                            const price = DOMPurify.sanitize(product.fields.price);
+                            const description = DOMPurify.sanitize(product.fields.description);
+                            const stock = DOMPurify.sanitize(product.fields.stock);
+                            const category = DOMPurify.sanitize(product.fields.category);
+                            const image = DOMPurify.sanitize(product.fields.image);
+
+                            htmlString += `
+                            <div class="col-md-4 mb-4">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-img-top">
+                                        ${image
+                                            ? `<img src="/media/product_images/${image}" class="card-img-top" alt="${name}">`
+                                            : `<img src="{% static 'images/PLACEHOLDER.jpeg' %}" class="card-img-top" alt="Default Product">`
+                                        }
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">${name}</h5>
+                                        <p class="card-text">Rp. ${price}</p>
+                                    </div>
+                                    <div class="card-description p-3">
+                                        <p>${description}</p>
+                                        <div class="btn-container" style="padding: 20px 0px 0px 0px;">
+                                            <a href="/edit-product-info/${product.pk}" class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <a href="/delete/${product.pk}" class="btn btn-outline-secondary" style="font-size: 0.8rem; padding: 5px 10px;">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            `;
+                        });
+                    }
+
+                    document.getElementById("product_cards").className = classNameString;
+                    document.getElementById("product_cards").innerHTML = htmlString;
+                }
+
+                refreshProducts();
+            ...
+            </script>
+            ...
+            ```
+
+            `document.getElementById("product_cards")` digunakan untuk mengakses elemen berdasarkan IDnya, dan`innerHTML` digunakan untuk mengisi *Child Element* jika di *assign* nilai string kosong, maka akan mengosongkan elemennya. `className` digunakan untuk mengisi *class name* tujuan. Logikanya dijalankan dengan `products.forEach((product))` digunakan untuk melakukan *looping* tiap elemen pada data yang diambil menggunakan fungsi `getMoodEntries()`. Kemudian, `htmlString` kita konkatenasi dengan data untuk mengisi *container* dengan *cards* seperti pada tutorial sebelumnya. Dan fungsi ini dipanggil ketika tiap kali membuka webnya.
+
+
+        - Lakukan pengambilan data *product* menggunakan AJAX `GET`. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang *logged-in*.
+
+            Untuk mengimplementasikan ini, pertama saya melakukan modifikasi terhadap `main/views.py` saya dengan menghapus `products = Product.objects.filter(user=request.user)` dan `{'products': products}` sebagai `context`. Kemudian pada `show_xml` dan `show_json` dan memodifikasi data yang digunakan, yaitu `data = Product.objects.filter(user=request.user)` yang hanya akan menampilkan data milik pengguna yang sudah *logged-in*. Kemudian saya membuat modal berdasarkan *framework Bootstrap* yang sudah saya implementasikan, yaitu:
+            ```html
+            ...
+            <div id="crudModal" tabindex="-1" aria-hidden="true" class="modal fade" style="display: none;">
+                <div id="crudModalContent" class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add New Product</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form id="productEntryForm" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <label for="productName">Product Name</label>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" name="name" id="productName" placeholder="Product Name" required>
+                                </div>
+                                
+                                <label for="productImage">Product Image</label>
+                                <div class="new_file_button">
+                                    <input type="file" id="productImage" name="image" accept="image/*" onchange="previewImage(event)">
+                                </div>
+
+                                <div class="image-preview-container" style="width: 250px; height: 250px; padding-bottom: 10px;">
+                                    <img id="imagePreview" src="#" alt="Image Preview" class="image-preview" style="max-width: 100%; max-height: 100%; display: none;">
+                                </div>
+                                
+                                <label for="productPrice">Product Price</label>
+                                <div class="form-floating mb-3">
+                                    <input type="number" id="price" name="price" min="0" class="form-control" placeholder="Product Price" required>
+                                </div>
+
+                                <label for="description">Product Description</label>
+                                <div class="form-floating mb-3">
+                                    <textarea id="description" name="description" rows="3" class="form-control" placeholder="Product Description" required></textarea>
+                                </div>
+                                
+                                <label for="productStock">Stock</label>
+                                <div class="form-floating mb-3">
+                                    <input type="number" id="productStock" name="stock" min="0" placeholder="Stock" class="form-control" required>
+                                </div>
+
+                                <label for="productCategory">Category</label>
+                                <div class="form-floating mb-3">
+                                    <input type="text" id="productCategory" name="category" placeholder="Category" class="form-control" required>
+                                </div>
+                                
+                            </form>
+
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" id="submitProductEntry" form="productEntryForm" class="btn btn-outline-secondary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            ...
+            ```
+
+            Dengan ada beberapa *class built-in*, saya menambahkan beberapa fungsi di block `<script>` agar modal dapat digunakan dan terintegrasi dengan web dengan baik, yaitu sebagai berikut
+            ```html
+            ...
+            <script>
+                // Initialize the Bootstrap modal
+                const modal = new bootstrap.Modal(document.getElementById('crudModal'));
+
+                function showModal() {
+                    document.getElementById("productEntryForm").reset();
+                    modal.show();
+                    document.body.classList.add('modal-open');
+                }
+
+                function hideModal() {
+                    modal.hide();
+                    document.body.classList.remove('modal-open');
+                    document.querySelectorAll('.modal-backdrop').forEach((el) => el.remove());
+                }
+
+                function resetForm() {
+                    document.getElementById("productEntryForm").reset();
+                    document.getElementById("imagePreview").src = "#";
+                    document.getElementById("imagePreview").style.display = "none";
+                }
+                ...
+            </script>
+            ...
+            ```
+
+            Dengan modal ini, saya dapat mengatur *behavior* dari modal, untuk menerima input dari pengguna saya menambahkan
+            ```html
+            ...
+            <script>
+                ...
+                function addProductEntry() {
+                    fetch("{% url 'main:create_ajax' %}", {
+                        method: "POST",
+                        body: new FormData(document.querySelector('#productEntryForm')),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            refreshProducts();
+                            hideModal();
+                        } else {
+                            alert("Error: " + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+
+                    return false;
+                }
+
+                document.getElementById("productEntryForm").addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    addProductEntry();
+                });
+
+                document.getElementById('crudModal').addEventListener('hidden.bs.modal', function () {
+                    resetForm();
+                    document.body.style.overflow = 'auto';
+                });
+            </script>
+            ...
+            ```
+            `new FormData(document.querySelector('#productEntryForm'))` digunakan untuk membuat *instance* `FormData` baru yang datannya diambil dari *form* pada modal. Objek ini digunakan untuk dikirim ke *server*. Setelah disubmit, Isi *field*nya dikosongkan. *Event listener* dipasang pada elemen *form* dengan id `productEntryForm` yang diambil dari DOM menggunakan `document.getElementById("productEntryForm")`. Ketika *form* di-submit, *event listener* ini memicu fungsi *callback* yang ditulis menggunakan notasi arrow function `(e) => {...`, dan fungsi tersebut dijalankan. Di dalam *callback*, `e.preventDefault()` digunakan untuk mencegah perilaku default *form* yang biasanya mengirim data secara langsung ke server, karena dalam kasus ini kita menggunakan AJAX untuk mengelola pengiriman data. Setelah itu, fungsi `addProductEntry()` dipanggil untuk menambahkan product entry melalui proses AJAX.
+
+    2. AJAX `POST`
+        - Buatlah sebuah tombol yang membuka sebuah modal dengan *form* untuk menambahkan *product*.
+            Pada `button container` yang sudah saya definisikan terlebih dahulu, saya menambahkan tombol baru yaitu
+            ```html
+            ...
+            <div style="display: flex; justify-content: flex-end; padding-bottom: 10px;">
+                <button type="button" class="btn btn-outline-secondary" style="font-size: 1.1rem; padding: 10px 20px;" onclick="showModal()">
+                    <i class="bi bi-plus-circle-fill"></i> Add New Product by AJAX
+                </button>
+            </div>
+            ...
+            ```
+        - Buatlah fungsi *view* baru untuk menambahkan *product* baru ke dalam basis data.
+            Pada `main/views.py` saya menambahkan import
+            ```python
+            ...
+            from django.views.decorators.csrf import csrf_exempt
+            from django.views.decorators.http import require_POST
+            ...
+            ```
+
+            agar menjadi decorator fungsi `create_ajax` yang sebagai berikut:
+            ```python
+            ...
+            @csrf_exempt
+            @require_POST
+            def create_ajax(request):
+                if request.method == 'POST':
+                    name = strip_tags(request.POST.get("name"))
+                    price = strip_tags(request.POST.get("price"))
+                    description = strip_tags(request.POST.get("description"))
+                    stock = strip_tags(request.POST.get("stock"))
+                    category = strip_tags(request.POST.get("category"))
+                    image = strip_tags(request.FILES.get("image"))
+                    user = request.user
+
+                    new_product = Product(
+                        name=name,
+                        price=price,
+                        description=description,
+                        stock=stock,
+                        category=category,
+                        image=image,
+                        user=user
+                    )
+                    new_product.save()
+
+                    return JsonResponse({'message': 'Product created successfully!'})
+                else:
+                    return JsonResponse({'error': 'Invalid request method'}, status=400)
+            ...
+            ```
+            Decorator `csrf_exempt` mencegah Django mengecek keberadaan `csrf_token` pada POST request, sehingga request dapat diproses tanpa validasi CSRF. Sementara itu, decorator `require_POST` memastikan bahwa fungsi hanya dapat diakses melalui `POST request`, dan jika menggunakan method lain, Django akan mengembalikan error 405 Method Not Allowed. Baris `mood = request.POST.get("mood")` digunakan untuk mengambil data dari POST request secara manual, dan `new_product = Product(...)` membuat objek mood baru berdasarkan data yang dikirimkan dalam request tersebut. `strip_tags` digunakan untuk menghapus semua *tags HTML* agar terhindar dari serangan `XSS`
+
+            Kemudian, pada `main/forms.py` saya menambahkan beberapa *method* untuk *data cleaning*, yaitu:
+            ```python
+            ...
+            def clean_mood(self):
+                name = self.cleaned_data["name"]
+                return strip_tags(name)
+
+            def clean_price(self):
+                price = self.cleaned_data["price"]
+                return strip_tags(price)
+            
+            def clean_description(self):
+                description = self.cleaned_data["description"]
+                return strip_tags(description)
+            
+            def clean_stock(self):
+                stock = self.cleaned_data["stock"]
+                return strip_tags(stock)
+
+            def clean_category(self):
+                category = self.cleaned_data["category"]
+                return strip_tags(category)
+            ...
+            ```
+            *Method-method* berikut akan dipanggil ketika pemanggilan `form.is_valid()` yang akan membersihkan inputnya secara keseluruhan.
+
+        - Buatlah *path* `/create-ajax/` yang mengarah ke fungsi *view* yang baru kamu buat.
+            Untuk *path* ini, cukup definisikan terlebih dahulu di `main/urls.py` dengan menambahkan `path('create_ajax/', views.create_ajax, name='create_ajax')` di dalam `urlpatterns`, dan path ini sudah dapat digunakan.
+
+        - Hubungkan *form* yang telah kamu buat di dalam modal kamu ke *path* `/create-ajax/`.
+            Untuk menghubungkan *form* dengan *path* `/create-ajax/`, pada `addProductEntry()` saya menggunakan
+            ```javascript
+            ...
+            function addProductEntry() {
+                fetch("{% url 'main:create_ajax' %}", {
+                    method: "POST",
+                    body: new FormData(document.querySelector('#productEntryForm')),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        refreshProducts();
+                        hideModal();
+                    } else {
+                        alert("Error: " + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+                return false;
+            }
+            ...
+            ```
+
+            Dengan `fetch ("{% url 'main:create_ajax' %}", {...` dia akan mengacu ke `create_ajax` yang merupakan fungsi untuk menerima modal input dari pengguna.
+
+        - Lakukan *refresh* pada halaman utama secara asinkronus untuk menampilkan daftar *product* terbaru tanpa reload halaman utama secara keseluruhan
+
+            Setelah berhasil menambahkan product baru melalui modal, saya melakukan refresh pada daftar product secara asinkron menggunakan AJAX GET (tanpa reload halaman). Kode AJAX untuk Refresh sudah dijelaskan dalam fungsi `resetForm()` di bagian AJAX GET. Fungsi ini dipanggil ulang setelah proses penambahan product berhasil atau menekan *cancel* ataupun menutup modal. Saya menggunakan *event listener* untuk mengelola program ini secara asinkron.
+
+            ```javascript
+            ...
+            function resetForm() {
+                document.getElementById("productEntryForm").reset();
+                document.getElementById("imagePreview").src = "#";
+                document.getElementById("imagePreview").style.display = "none";
+            }
+            ...
+            document.getElementById('crudModal').addEventListener('hidden.bs.modal', function () {
+                resetForm();
+                document.body.style.overflow = 'auto';
+            });
+            ...
+            ```

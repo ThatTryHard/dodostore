@@ -84,24 +84,15 @@ body {
 }
 
 .form-floating label {
+    border: none; /* Remove any border */
+    background: none; /* Remove background if any */
+    padding: 0; /* Remove padding */
     color: var(--input-placeholder-color);  /* Light mode placeholder color */
     transition: color 0.3s ease;
 }
 
 .navbar-light {
     background-color: var(--navbar-background-color);
-}
-
-input[type="file"] {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    cursor: pointer;
-}
-
-.dark-mode input[type="file"] {
-    background-color: var(--dark-background-color);
-    color: var(--dark-text-color);
-    cursor: pointer;
 }
 
 .navbar-light .dropdown-menu {
@@ -154,6 +145,9 @@ a {
 }
 
 .dark-mode .form-floating label {
+    border: none; /* Remove any border */
+    background: none; /* Remove background if any */
+    padding: 0; /* Remove padding */
     color: var(--dark-input-placeholder-color);
     transition: color 0.3s ease;
 }
@@ -246,6 +240,7 @@ body, .btn-custom, a, .navbar-light, .navbar-dark {
 .image-preview-container {
     margin-top: 10px;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 /* Preview image styles */
@@ -253,10 +248,8 @@ body, .btn-custom, a, .navbar-light, .navbar-dark {
     display: none;
     max-width: 200px;
     max-height: 200px;
-    border: 1px solid #ddd;
-    padding: 5px;
     border-radius: 10px;
-    object-fit: contain;
+    object-fit: fill;
 }
 
 .carousel-img {
@@ -265,3 +258,72 @@ body, .btn-custom, a, .navbar-light, .navbar-dark {
     object-fit: cover; /* Ensures the image covers the container without distortion */
 }
 
+/* Modal Light Mode Styles */
+.modal-content {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+/* Modal Dark Mode Styles */
+.dark-mode .modal-content {
+    background-color: var(--dark-background-color);
+    color: var(--dark-text-color);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--input-border-color);
+}
+
+/* Dark Mode Modal Header */
+.dark-mode .modal-header {
+    border-bottom: 1px solid var(--dark-input-border-color);
+}
+
+.new_file_button {
+    border: 1px solid var(--dark-input-placeholder-color);
+    background-color: var(--input-bg-color);
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.new_file_button::-webkit-file-upload-button {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.new_file_button::-webkit-file-upload-button:hover {
+    background-color: var(--alert-text-color);
+}
+
+.dark-mode .new_file_button {
+    border: 1px solid var(--dark-input-border-color);
+    background-color: var(--dark-input-bg-color);
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.dark-mode .new_file_button::-webkit-file-upload-button {
+    background-color: var(--dark-alert-bg-color);
+    color: var(--dark-text-color);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+.dark-mode .new_file_button::-webkit-file-upload-button:hover {
+    background-color: var(--dark-input-border-color);
+}

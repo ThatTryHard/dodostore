@@ -13,7 +13,6 @@
         <label for="formGroupInput1" class="form-label">Product Name</label>
         <div class="form-floating mb-3">
             <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" value="{{ form.name.value }}" required>
-            <label for="name">Product Name</label>
         </div>
 
         <label for="productImage">Product Image</label>
@@ -32,25 +31,21 @@
         <label for="formGroupInput2" class="form-label">Product Price</label>
         <div class="form-floating mb-3">
             <input type="number" name="price" class="form-control" id="price" placeholder="Price" value="{{ form.price.value }}" required>
-            <label for="price">Price</label>
         </div>
 
         <label for="formGroupInput3" class="form-label">Stock</label>
         <div class="form-floating mb-3">
             <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock" value="{{ form.stock.value }}" required>
-            <label for="stock">Stock</label>
         </div>
 
         <label for="formGroupInput4" class="form-label">Category</label>
         <div class="form-floating mb-3">
             <input type="text" name="category" class="form-control" id="category" placeholder="Category" value="{{ form.category.value }}" required>
-            <label for="category">Category</label>
         </div>
 
         <label for="formGroupInput5" class="form-label">Product Description</label>
         <div class="form-floating">
             <textarea class="form-control" name="description" placeholder="Product Description" style="height: 150px" id="description" required>{{ form.description.value }}</textarea>
-            <label for="description">Product Description</label>
         </div>
 
         <!-- Submit button -->
