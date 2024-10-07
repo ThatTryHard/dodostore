@@ -134,7 +134,7 @@ def create_ajax(request):
         description = strip_tags(request.POST.get("description"))
         stock = strip_tags(request.POST.get("stock"))
         category = strip_tags(request.POST.get("category"))
-        image = strip_tags(request.FILES.get("image"))
+        image = request.FILES.get("image")
         user = request.user
 
         new_product = Product(
