@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from main.models import Product
 from main.forms import ProductForm
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -13,8 +13,8 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.html import strip_tags
+from django.core.exceptions import ValidationError
 
-# Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
     cookies = request.COOKIES
@@ -28,9 +28,6 @@ def show_main(request):
     return render(request, "main.html", context)
 
 def product_list(request):
-    # Take all Product data from the database
-    # products = Product.objects.filter(user=request.user)
-    # context = {'products': products}
     return render(request, 'product_list.html')
 
 def add_product_to_list(request):
@@ -46,7 +43,6 @@ def add_product_to_list(request):
 
     context = {'form': form}
     return render(request, "add_product_to_list.html", context)
-
 
 def show_xml(request):
     data = Product.objects.filter(user=request.user)
@@ -108,13 +104,35 @@ def toggle_theme(request):
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
+def is_xss_risky(value):
+    return '<' in value or '>' in value
+
 def edit_product_info(request, id):
-    product = Product.objects.get(pk=id)
+    product = get_object_or_404(Product, pk=id)
     form = ProductForm(request.POST or None, request.FILES or None, instance=product)
 
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return HttpResponseRedirect(reverse('main:product_list'))
+    if request.method == "POST":
+        post_data = request.POST.copy()
+        name = post_data.get('name', '')
+        price = post_data.get('price', '')
+        description = post_data.get('description', '')
+        stock = post_data.get('stock', '')
+        category = post_data.get('category', '')
+
+        if any(is_xss_risky(value) for value in [name, description, category]):
+            form.add_error(None, "Potential XSS detected in product fields. Please avoid using HTML or special characters.")
+        else:
+            post_data['name'] = strip_tags(name)
+            post_data['price'] = strip_tags(price)
+            post_data['description'] = strip_tags(description)
+            post_data['stock'] = strip_tags(stock)
+            post_data['category'] = strip_tags(category)
+
+            form = ProductForm(post_data, request.FILES or None, instance=product)
+
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('main:product_list'))
 
     context = {'form': form, 'product': product}
     return render(request, "edit_product_info.html", context)
@@ -137,6 +155,24 @@ def create_ajax(request):
         image = request.FILES.get("image")
         user = request.user
 
+        if name != request.POST['name']:
+            return JsonResponse({'error': 'Potential XSS detected in product name.'})
+        
+        elif price != request.POST['price']:
+            return JsonResponse({'error': 'Potential XSS detected in product price.'})
+        
+        elif description != request.POST['description']:
+            return JsonResponse({'error': 'Potential XSS detected in product description.'})
+        
+        elif stock != request.POST['stock']:
+            return JsonResponse({'error': 'Potential XSS detected in product stock.'})
+        
+        elif category != request.POST['category']:
+            return JsonResponse({'error': 'Potential XSS detected in product category.'})
+        
+        if not all([name, price, description, stock, category]):
+            return JsonResponse({'error': 'Please fill in all required fields'}, status=400)
+
         new_product = Product(
             name=name,
             price=price,
@@ -146,6 +182,7 @@ def create_ajax(request):
             image=image,
             user=user
         )
+
         new_product.save()
 
         return JsonResponse({'message': 'Product created successfully!'})

@@ -2,16 +2,22 @@
 {% block content %}
 <h1>Add New Product</h1>
 
-<form method="POST", enctype="multipart/form-data">
+{% if form.non_field_errors %}
+<div class="alert alert-danger">
+    {{ form.non_field_errors }}
+</div>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data" id="addProductForm" novalidate>
     {% csrf_token %}
 
-    <label for="formGroupInput1" class="form-label">Product Name</label>
+    <label for="name" class="form-label">Product Name</label>
     <div class="form-floating mb-3">
         <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" value="{{ form.name.value|default_if_none:'' }}" required>
-        <label for="name">Product Name</label>
+        <div class="invalid-feedback">Please enter a valid product name.</div>
     </div>
 
-    <label for="productImage">Product Image</label>
+    <label for="productImage" class="form-label">Product Image</label>
     <div class="form-floating mb-3">
         <input class="form-control" type="file" name="image" id="productImage" accept="image/*" onchange="previewImage(event)">
     </div>
@@ -20,28 +26,28 @@
         <img id="imagePreview" src="#" alt="Image Preview" class="image-preview" style="max-width: 100%; max-height: 100%; display: none;">
     </div>
 
-    <label for="formGroupInput2" class="form-label">Product Price</label>
+    <label for="price" class="form-label">Product Price</label>
     <div class="form-floating mb-3">
         <input type="number" name="price" class="form-control" id="price" placeholder="Product Price" value="{{ form.price.value|default_if_none:'' }}" required>
-        <label for="price">Product Price</label>
+        <div class="invalid-feedback">Please enter a valid price.</div>
     </div>
 
-    <label for="formGroupInput3" class="form-label">Product Description</label>
-    <div class="form-floating">
+    <label for="floatingTextarea2" class="form-label">Product Description</label>
+    <div class="form-floating mb-3">
         <textarea class="form-control" name="description" placeholder="Product Description" id="floatingTextarea2" style="height: 150px" required>{{ form.description.value|default_if_none:'' }}</textarea>
-        <label for="floatingTextarea2">Product Description</label>
+        <div class="invalid-feedback">Please enter a product description.</div>
     </div>
 
-    <label for="formGroupInput4" class="form-label">Stock</label>
+    <label for="stock" class="form-label">Stock</label>
     <div class="form-floating mb-3">
         <input type="number" name="stock" class="form-control" id="stock" placeholder="Stock" value="{{ form.stock.value|default_if_none:'' }}" required>
-        <label for="stock">Stock</label>
+        <div class="invalid-feedback">Please enter a valid stock quantity.</div>
     </div>
 
-    <label for="formGroupInput5" class="form-label">Category</label>
+    <label for="category" class="form-label">Category</label>
     <div class="form-floating mb-3">
         <input type="text" name="category" class="form-control" id="category" placeholder="Category" value="{{ form.category.value|default_if_none:'' }}" required>
-        <label for="category">Category</label>
+        <div class="invalid-feedback">Please enter a valid category.</div>
     </div>
 
     <div class="form-actions mt-3">
@@ -49,5 +55,49 @@
         <a href="{% url 'main:product_list' %}" class="btn btn-outline-secondary">Return to Products</a>
     </div>
 </form>
+
+<script>
+    (function () {
+        'use strict';
+
+        const xssPattern = /<|>/g;
+        const form = document.getElementById('addProductForm');
+        form.addEventListener('submit', function (event) {
+            let isXssDetected = false;
+
+            Array.from(form.elements).forEach(input => {
+                if (input.type === 'text' || input.type === 'textarea') {
+                    if (xssPattern.test(input.value)) {
+                        input.classList.add('is-invalid');
+                        input.nextElementSibling.textContent = 'Invalid input detected (potential XSS).';
+                        isXssDetected = true;
+                    } else {
+                        input.classList.remove('is-invalid');
+                    }
+                }
+            });
+
+            if (isXssDetected || !form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+
+        Array.from(form.elements).forEach(input => {
+            input.addEventListener('input', function () {
+                if (input.checkValidity()) {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                } else {
+                    input.classList.remove('is-valid');
+                    input.classList.add('is-invalid');
+                }
+            });
+        });
+    })();
+
+</script>
 
 {% endblock %}
