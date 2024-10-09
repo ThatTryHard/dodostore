@@ -1648,7 +1648,7 @@
             ...
             ```
 
-            `document.getElementById("product_cards")` digunakan untuk mengakses elemen berdasarkan IDnya, dan`innerHTML` digunakan untuk mengisi *Child Element* jika di *assign* nilai string kosong, maka akan mengosongkan elemennya. `className` digunakan untuk mengisi *class name* tujuan. Logikanya dijalankan dengan `products.forEach((product))` digunakan untuk melakukan *looping* tiap elemen pada data yang diambil menggunakan fungsi `getMoodEntries()`. Kemudian, `htmlString` kita konkatenasi dengan data untuk mengisi *container* dengan *cards* seperti pada tutorial sebelumnya. Dan fungsi ini dipanggil ketika tiap kali membuka webnya.
+            `document.getElementById("product_cards")` digunakan untuk mengakses elemen berdasarkan IDnya, dan`innerHTML` digunakan untuk mengisi *Child Element* jika di *assign* nilai string kosong, maka akan mengosongkan elemennya. `className` digunakan untuk mengisi *class name* tujuan. Logikanya dijalankan dengan `products.forEach((product))` digunakan untuk melakukan *looping* tiap elemen pada data yang diambil menggunakan fungsi `geProductEntries()`. Kemudian, `htmlString` kita konkatenasi dengan data untuk mengisi *container* dengan *cards* seperti pada tutorial sebelumnya. Dan fungsi ini dipanggil ketika tiap kali membuka webnya.
 
 
         - Lakukan pengambilan data *product* menggunakan AJAX `GET`. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang *logged-in*.
