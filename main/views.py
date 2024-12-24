@@ -196,13 +196,14 @@ def create_product_flutter(request):
     if request.method == 'POST':
 
         data = json.loads(request.body)
+        image = request.FILES.get("image", None)
         new_product = ProductForm.objects.create(
             name=data["name"],
             price=int(data["price"]),
             description=data["description"],
             stock=int(data["stock"]),
             category=data["category"],
-            image=request.FILES.get("image"),
+            image=data["image"],  # Will be None if no image is provided
             user=request.user,
         )
 
