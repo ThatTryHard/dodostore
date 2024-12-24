@@ -197,7 +197,7 @@ def create_product_flutter(request):
 
         data = json.loads(request.body)
         image = request.FILES.get("image", None)
-        new_product = ProductForm.objects.create(
+        new_product = Product.objects.create(
             name=data["name"],
             price=int(data["price"]),
             description=data["description"],
